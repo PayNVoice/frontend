@@ -9,7 +9,7 @@ const navItems = [
   {
     id: 1,
     name: "Dashboard",
-    path: "/invoice/test",
+    path: "/invoice/dashboard",
     icon: Home,
   },
   { id: 2, name: "Create Invoice", path: "/customers", icon: User },

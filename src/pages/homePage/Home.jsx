@@ -12,12 +12,12 @@
 
 
 
-import Navbar from '../../components/Navbar.jsx';
-import Hero from '../../components/Hero';
-import Features from '../../components/Features.jsx';
-import Testimonial from '../../components/Testimonial';
-import CallToAction from '../../components/CallToAction';
-import Footer from '../../components/Footer';
+import Navbar from '../../components/Navbar/Navbar.jsx';
+import Hero from '../../components/Hero/Hero.jsx';
+import Features from '../../components/Features/Features.jsx';
+import Testimonial from '../../components/Testimonial/Testimonial.jsx';
+import CallToAction from '../../components/CallToAction/CallToAction.jsx';
+import Footer from '../../components/Footer/Footer.jsx';
 
 function Home() {
   return (
