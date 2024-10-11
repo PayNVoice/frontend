@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 import logo from '../assets/images/logo.png'
-import {User, ChartArea, Settings, Home} from 'lucide-react'
+import {User, ChartArea, Settings, Home, ArrowBigLeft, ArrowBigRight, X} from 'lucide-react'
 
 // Dummy nav items
 const navItems = [
   {
     id: 1,
     name: "Dashboard",
-    path: "/invoice/test",
+    path: "/invoice/dashboard",
     icon: Home,
   },
   { id: 2, name: "Create Invoice", path: "/customers", icon: User },
@@ -17,9 +17,10 @@ const navItems = [
   { id: 4, name: "Transaction History", path: "/settings", icon: Settings },
 ];
 
-const SideBar = () => {
+const SideBar = ({opened, setOpened}) => {
   const location = useLocation();
   const [activeNav, setActiveNav] = useState("");
+ 
 
   // Update the active path on route change
   useEffect(() => {
@@ -27,11 +28,13 @@ const SideBar = () => {
   }, [location]);
 
   return (
-    <div className=" w-60 fixed justify-center space-y-10 md:flex md:flex-col bg-gradient-to-b to-[#568ce2] from-[#1f3a63]  py-3 shadow-md h-screen">
-
-      <Link to="/" className="-mt-20">
+    <div className={`${opened ? "w-60 md:w-0 z-10":"w-60 z-10 hidden"} fixed justify-center space-y-10 md:flex md:flex-col bg-gradient-to-b to-[#568ce2] from-[#1f3a63]  py-3 shadow-md h-screen`}>
+      <div className="">
+      <X  onClick={()=>setOpened(false)} className="cursor-pointer ml-52 mt-2 justify-end rounded-full  text-white md:hidden flex" />
+      <Link to="/" className="pb-20">
           <img src={logo} alt="logo" className="h-24 w-full" />
       </Link>
+      </div>
 
       <div className="flex flex-col justify-center items-center space-y-4">
         

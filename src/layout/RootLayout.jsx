@@ -2,19 +2,22 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
+import { useState } from "react";
 
 const RootLayout = () => {
+  const [opened, setOpened] = useState(false);
+
   return (
     <div className="w-full flex">
      {/* SIDEBAR */}
-     <SideBar />
+     <SideBar opened={opened} setOpened={setOpened} />
 
       <div className=" flex flex-col w-full ">
         {/* HEADER */}
-        <NavBar />
+        <NavBar opened={opened} setOpened={setOpened} />
 
         {/* Main content area */}
-        <div className="flex-grow  ml-64 px-5">
+        <div className="flex-grow  md:ml-64 ml-0 px-5">
           <Outlet />
         </div>
       </div>

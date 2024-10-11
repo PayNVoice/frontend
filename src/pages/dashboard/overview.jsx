@@ -61,13 +61,6 @@ const Overview = () => {
           <h3 className="text-[18px] text-[black] font-bold ">Activity</h3>
         </div>
       </div>
-
-      <button
-        type="button"
-        className="text-gray-900 mt-4  bg-blue-600 text-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2"
-      >
-        Create new invoice
-      </button>
     </div>
   );
 };
