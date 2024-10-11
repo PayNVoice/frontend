@@ -5,16 +5,16 @@ import SideBar from "./SideBar";
 
 const RootLayout = () => {
   return (
-    <div className="w-full h-screen overflow-hidden">
-      {/* HEADER */}
-      <NavBar />
+    <div className="w-full flex">
+     {/* SIDEBAR */}
+     <SideBar />
 
-      <div className="w-full h-full flex">
-        {/* SIDEBAR */}
-        <SideBar />
+      <div className=" flex flex-col w-full ">
+        {/* HEADER */}
+        <NavBar />
 
         {/* Main content area */}
-        <div className="flex-grow px-10">
+        <div className="flex-grow  ml-64 px-5">
           <Outlet />
         </div>
       </div>
