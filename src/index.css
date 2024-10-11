@@ -1,16 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
-  background-image: url('../src/assets/images/bg-tablet-pattern.svg');
+  background-image: url("../src/assets/images/bg-tablet-pattern.svg");
   background-repeat: no-repeat;
   background-size: 800px;
   background-position: 90% -25%;
 }
 
 #cta {
-  background-image: url('./assets/images/bg-simplify-section-desktop.svg');
+  background-image: url("./assets/images/bg-simplify-section-desktop.svg");
   background-repeat: no-repeat;
 }
 
@@ -21,7 +25,7 @@ body {
   }
 
   #cta {
-    background-image: url('./assets/images/bg-simplify-section-mobile.svg');
+    background-image: url("./assets/images/bg-simplify-section-mobile.svg");
   }
 }
 
@@ -71,3 +75,21 @@ body {
 .open .hamburger-bottom {
   transform: rotate(-45deg) translateY(6px) translate(-6px);
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2b2b2c; 
+  border-radius: 9999px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #2b2b2c; 
+}
+
+::-webkit-scrollbar-track {
+  background-color: #111213;
+}
+

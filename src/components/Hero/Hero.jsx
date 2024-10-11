@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import illustrationIntro from '../assets/images/illustration-intro.svg';
-import illustration from '../assets/images/illustration.avif'
+import illustrationIntro from '../../assets/images/illustration-intro.svg';
+import illustration from '../../assets/images/illustration.avif'
 
 const Hero = () => {
   return (

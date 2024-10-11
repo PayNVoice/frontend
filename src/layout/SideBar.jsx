@@ -1,30 +1,26 @@
 import { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
-// ASSETS
-import {
-  FaFileInvoiceDollar,
-  FaUsers,
-  FaCog,
-  FaChartLine,
-} from "react-icons/fa";
+import logo from '../assets/images/logo.png'
+import {User, ChartArea, Settings, Home, ArrowBigLeft, ArrowBigRight, X} from 'lucide-react'
 
 // Dummy nav items
 const navItems = [
   {
     id: 1,
-    name: "Create Invoice",
-    path: "/invoice/test",
-    icon: FaFileInvoiceDollar,
+    name: "Dashboard",
+    path: "/invoice/dashboard",
+    icon: Home,
   },
-  { id: 2, name: "Customers", path: "/customers", icon: FaUsers },
-  { id: 3, name: "Reports", path: "/reports", icon: FaChartLine },
-  { id: 4, name: "Transaction History", path: "transaction-history", icon: FaCog },
+  { id: 2, name: "Create Invoice", path: "/customers", icon: User },
+  { id: 3, name: "Contracts", path: "/invoice/multiparty", icon: ChartArea },
+  { id: 4, name: "Transaction History", path: "/settings", icon: Settings },
 ];
 
-const SideBar = () => {
+const SideBar = ({opened, setOpened}) => {
   const location = useLocation();
   const [activeNav, setActiveNav] = useState("");
+ 
 
   // Update the active path on route change
   useEffect(() => {
@@ -32,16 +28,24 @@ const SideBar = () => {
   }, [location]);
 
   return (
-    <div className="w-[260px] border h-full py-6">
-      <div className="w-full flex flex-col gap-2">
+    <div className={`${opened ? "w-60 md:w-0 z-10":"w-60 z-10 hidden"} fixed justify-center space-y-10 md:flex md:flex-col bg-gradient-to-b to-[#568ce2] from-[#1f3a63]  py-3 shadow-md h-screen`}>
+      <div className="">
+      <X  onClick={()=>setOpened(false)} className="cursor-pointer ml-52 mt-2 justify-end rounded-full  text-white md:hidden flex" />
+      <Link to="/" className="pb-20">
+          <img src={logo} alt="logo" className="h-24 w-full" />
+      </Link>
+      </div>
+
+      <div className="flex flex-col justify-center items-center space-y-4">
+        
         {navItems.map((item) => (
           <NavLink
             key={item.id}
             to={item.path}
-            className={`w-full h-10 cursor-pointer border-x-[8px] border-transparent flex items-center gap-5 px-3 ${
+            className={`w-5/6  text-white font-roboto text-base font-semibold cursor-pointer py-2 gap-3 flex items-center px-3 ${
               activeNav === item.path
-                ? "bg-cyan-100 border-cyan-400 text-cyan-700"
-                : "hover:border-cyan-400 hover:bg-cyan-100 text-gray-400 hover:text-cyan-700"
+                ? "bg-cyan-500 border-cyan-400 text-cyan-700"
+                : "hover:bg-cyan-500 text-gray-400"
             }`}
             onClick={() => setActiveNav(item.path)}
           >
