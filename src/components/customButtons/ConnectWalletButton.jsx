@@ -1,5 +1,5 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-export const ConnectWalletButton = () => {
+ const ConnectWalletButton = () => {
   return (
     <ConnectButton.Custom>
       {({
@@ -90,3 +90,4 @@ export const ConnectWalletButton = () => {
     </ConnectButton.Custom>
   );
 };
+export default ConnectWalletButton;
