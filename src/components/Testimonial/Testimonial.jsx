@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-import avatarAnisha from "../assets/images/avatar-anisha.png";
-import avatarAli from "../assets/images/avatar-ali.png";
-import avatarRichard from "../assets/images/avatar-richard.png";
+import avatarAnisha from "../../assets/images/avatar-anisha.png";
+import avatarAli from "../../assets/images/avatar-ali.png";
+import avatarRichard from "../../assets/images/avatar-richard.png";
 
 const Testimonial = () => {
   return (
