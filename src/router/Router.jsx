@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 // LAYOUTS
+import RootLayout from "../layout/RootLayout";
 
 // PAGES
 import Home from "../pages/homePage/Home";
@@ -16,10 +17,11 @@ const router = createBrowserRouter(
       {/* SAMPLE ROUTE */}
       <Route index element={<Home />} />
 
-      {/* SAMPLE IF WE IMPLEMENT A LAYOUT */}
-      {/* <Route path="admin" element={<RootLayout />}>
-           
-          </Route> */}
+      {/* EVERY OTHER PAGE ROUTING SHOULD BE DONE IN HERE */}
+      <Route path="invoice" element={<RootLayout />}>
+        {/* TO NAVIGATE TO THIS ROUTE JUST GO TO: /invoice/test  */}
+        <Route path="test" element={<p>hello</p>} />
+      </Route>
     </Route>
   )
 );
