@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import companyLogo from '../assets/images/logo.svg';
+import companyLogo from '../../assets/images/logo.svg';
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
