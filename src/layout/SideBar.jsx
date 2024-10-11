@@ -19,7 +19,7 @@ const navItems = [
   },
   { id: 2, name: "Customers", path: "/customers", icon: FaUsers },
   { id: 3, name: "Reports", path: "/reports", icon: FaChartLine },
-  { id: 4, name: "Settings", path: "/settings", icon: FaCog },
+  { id: 4, name: "Transaction History", path: "transaction-history", icon: FaCog },
 ];
 
 const SideBar = () => {
