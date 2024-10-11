@@ -35,7 +35,7 @@ const Navbar = () => {
         </div> */}
         {/* Button */}
         <Link
-          to='#'
+          to='/invoice/test'
           className='hidden p-3 px-6 pt-2 text-white bg-blue-500 rounded-full baseline hover:bg-blue-700 md:block'
         >
           Get Started
@@ -66,7 +66,7 @@ const Navbar = () => {
           }
         >
           <Link
-          to='#'
+          to='/invoice/test'
           className=' p-3 px-6 pt-2 text-white bg-blue-500 rounded-full baseline hover:bg-blue-700 md:block'
         >
           Get Started
