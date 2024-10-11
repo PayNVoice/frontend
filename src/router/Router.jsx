@@ -12,6 +12,7 @@ import RootLayout from "../layout/RootLayout";
 import Home from "../pages/homePage/Home";
 import Overview from "../pages/dashboard/overview";
 import Multiparty from "../pages/multiparty/Multiparty";
+import TransactionHistory from "../pages/transactionHistory/TransactionHistory";
 
 
 const router = createBrowserRouter(
@@ -26,7 +27,7 @@ const router = createBrowserRouter(
         <Route path="dashboard" element={<Overview />} />
         <Route path="overview" element={<Overview />} />
         <Route path="multiparty" element={<Multiparty/>} />
-        <Route path="test" element={<Multiparty/>} />
+        <Route path="transaction-history" element={<TransactionHistory/>} />
       </Route>
     </Route>
   )
