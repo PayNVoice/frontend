@@ -22,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="invoice" element={<RootLayout />}>
         {/* TO NAVIGATE TO THIS ROUTE JUST GO TO: /invoice/test  */}
         <Route path="multiparty" element={<Multiparty/>} />
+        <Route path="test" element={<Multiparty/>} />
       </Route>
     </Route>
   )
