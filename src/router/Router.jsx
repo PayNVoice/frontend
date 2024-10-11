@@ -10,6 +10,7 @@ import RootLayout from "../layout/RootLayout";
 
 // PAGES
 import Home from "../pages/homePage/Home";
+import Multiparty from "../components/Multiparty";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,7 +21,7 @@ const router = createBrowserRouter(
       {/* EVERY OTHER PAGE ROUTING SHOULD BE DONE IN HERE */}
       <Route path="invoice" element={<RootLayout />}>
         {/* TO NAVIGATE TO THIS ROUTE JUST GO TO: /invoice/test  */}
-        <Route path="test" element={<p>hello</p>} />
+        <Route path="multiparty" element={<Multiparty/>} />
       </Route>
     </Route>
   )
