@@ -10,6 +10,7 @@ import RootLayout from "../layout/RootLayout";
 
 // PAGES
 import Home from "../pages/homePage/Home";
+import Overview from "../pages/dashboard/overview";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="invoice" element={<RootLayout />}>
         {/* TO NAVIGATE TO THIS ROUTE JUST GO TO: /invoice/test  */}
         <Route path="test" element={<p>hello</p>} />
+        <Route path="overview" element={<Overview />} />
       </Route>
     </Route>
   )
