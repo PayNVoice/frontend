@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
-import companyLogoWhite from '../assets/images/logo-white.svg';
-import facebookLogo from '../assets/images/icon-facebook.svg';
-import youtubeLogo from '../assets/images/icon-youtube.svg';
-import twitterLogo from '../assets/images/icon-twitter.svg';
-import pinterestLogo from '../assets/images/icon-pinterest.svg';
-import instagramLogo from '../assets/images/icon-instagram.svg';
+import companyLogoWhite from '../../assets/images/logo-white.svg';
+import facebookLogo from '../../assets/images/icon-facebook.svg';
+import youtubeLogo from '../../assets/images/icon-youtube.svg';
+import twitterLogo from '../../assets/images/icon-twitter.svg';
+import pinterestLogo from '../../assets/images/icon-pinterest.svg';
+import instagramLogo from '../../assets/images/icon-instagram.svg';
 
 const Footer = () => {
   return (
