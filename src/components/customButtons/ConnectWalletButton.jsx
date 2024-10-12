@@ -34,7 +34,15 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type="button">
+                  <button onClick={openConnectModal} type="button" 
+                  style={{ 
+                    borderColor: 'black',
+                    padding: '5px',
+                    borderRadius: '5px',
+                    borderWidth: '1px',
+                    backgroundColor: 'white'
+                   }}
+                  >
                     Connect Wallet
                   </button>
                 );
