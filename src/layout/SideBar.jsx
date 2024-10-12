@@ -31,7 +31,7 @@ const SideBar = ({opened, setOpened}) => {
     <div className={`${opened ? "w-60 md:w-0 z-10":"w-60 z-10 hidden"} fixed justify-center space-y-10 md:flex md:flex-col bg-gradient-to-b to-[#568ce2] from-[#1f3a63]  py-3 shadow-md h-screen`}>
       <div className="">
       <X  onClick={()=>setOpened(false)} className="cursor-pointer ml-52 mt-2 justify-end rounded-full  text-white md:hidden flex" />
-      <Link to="/" className="pb-20">
+      <Link to="/" className="">
           <img src={logo} alt="logo" className="h-24 w-full" />
       </Link>
       </div>

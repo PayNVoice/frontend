@@ -15,8 +15,8 @@ const Overview = () => {
         <SummaryCard title="Total Value Locked" value={"$45,230"} />
       </div>
 
-      <div className="activity-and-transactions mt-6 flex flex-wrap gap-2 items-start justify-between">
-        <div className="transactions w-[100%] bg-white border-grey border-[1px] border-solid md:w-[68%]">
+      <div className="activity-and-transactions mt-6">
+        <div className="transactions w-full bg-white border-grey border-[1px] border-solid md:full">
           <h3 className=" p-4 text-[18px] text-[black] font-bold">
             Recent Transaction
           </h3>
@@ -56,9 +56,6 @@ const Overview = () => {
               </tbody>
             </table>
           </div>
-        </div>
-        <div className="activity p-4 w-[100%]  bg-white border-grey border-[1px] border-solid md:w-[30%]">
-          <h3 className="text-[18px] text-[black] font-bold ">Activity</h3>
         </div>
       </div>
     </div>
