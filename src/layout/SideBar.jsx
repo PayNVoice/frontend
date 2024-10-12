@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 import logo from '../assets/images/logo.png'
-import {User, ChartArea, Settings, Home, ArrowBigLeft, ArrowBigRight, X, History} from 'lucide-react'
+import {User, ChartArea, Home, X, History} from 'lucide-react'
 
 // Dummy nav items
 const navItems = [
