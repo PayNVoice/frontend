@@ -1,105 +1,80 @@
-import React from 'react';
+import React from "react";
+import { motion } from "framer-motion";
+import { fadeIn, slideIn, staggerContainer, zoomIn } from "../../utils/motion";
 
 const Features = () => {
+  const featuresArray = [
+    {
+      number: "01",
+      header: "Automated Smart Contract Invoicing",
+      body: "Generate invoices with predefined conditions like due dates, delivery terms, and automatic payment triggers.Payments are secured through smart contracts, ensuring timely and secure transactions.",
+    },
+    {
+      number: "02",
+      header: "Escrow and Payment Automation",
+      body: "Ensure funds are safely held in escrow and only released when predefined conditions are met,removing the risks of delayed payments or unmet contract terms.",
+    },
+    {
+      number: "03",
+      header: "Multi-Party Contract Support",
+      body: "Create agreements involving multiple stakeholders. Payments can be distributed automatically based on agreed percentages or fixed amounts, ensuring transparent collaboration between all parties.",
+    },
+  ];
+
   return (
-    <section id='features'>
+    <motion.section id="features" variants={staggerContainer(0.5, 0.3)}>
       {/* Flex Container */}
-      <div className='container flex flex-col px-4 mx-auto mt-10 space-y-12 md:space-y-0 md:flex-row'>
+      <div className="container flex flex-col px-4 mx-auto mt-10 space-y-12 md:space-y-0 md:flex-row">
         {/* What's Different */}
-        <div className='flex flex-col space-y-12 md:w-1/2'>
-          <h2 className='max-w-md text-4xl font-bold text-center md:text-left'>
-            What's different about Manage?
+        <motion.div className="flex flex-col space-y-12 md:w-1/2">
+          <h2 className="max-w-md text-4xl font-bold text-center md:text-left">
+            What do we do?
           </h2>
-          <p className='max-w-sm text-center text-darkGrayishBlue md:text-left'>
-            Manage provides all the functionality your team needs, without the
-            complexity. Our software is tailor-made for modern digital product
-            teams.
+          <p className="max-w-sm text-center text-darkGrayishBlue md:text-left">
+            From escrow services to milestone-based payments, our platform is
+            built for businesses ready to adopt the future of secure, digital
+            transactions.
           </p>
-        </div>
+        </motion.div>
 
         {/* Numbered List */}
-        <div className='flex flex-col space-y-8 md:w-1/2'>
+        <div className="flex flex-col space-y-8 md:w-1/2">
           {/* List Item 1 */}
-          <div className='flex flex-col space-y-3 md:space-y-0 md:space-x-6 md:flex-row'>
-            {/* Heading */}
-            <div className='rounded-l-full bg-brightRedSupLight md:bg-transparent'>
-              <div className='flex items-center space-x-2'>
-                <div className='px-4 py-2 text-white rounded-full md:py-1 bg-brightRed'>
-                  01
+          {featuresArray.map((point, index) => (
+            <motion.div
+              key={point.body}
+              variants={slideIn("down", "spring", 1, index * 0.3)}
+              initial="hidden"
+              whileInView="show"
+              className="flex flex-col space-y-3 md:space-y-0 md:space-x-6 md:flex-row"
+            >
+              {/* Heading */}
+              <div className="rounded-l-full bg-brightRedSupLight md:bg-transparent">
+                <div className="flex items-center space-x-2">
+                  <div className="px-4 py-2 text-white rounded-full md:py-1 bg-blue-500">
+                    {point.number}
+                  </div>
+                  <h3 className="text-base font-bold md:mb-4 md:hidden">
+                    {point.header}
+                  </h3>
                 </div>
-                <h3 className='text-base font-bold md:mb-4 md:hidden'>
-                  Track company-wide progress
-                </h3>
               </div>
-            </div>
 
-            <div>
-              <h3 className='hidden mb-4 text-lg font-bold md:block'>
-                Track company-wide progress
-              </h3>
-              <p className='text-darkGrayishBlue'>
-                See how your day-to-day tasks fit into the wider vision. Go from
-                tracking progress at the milestone level all the way done to the
-                smallest of details. Never lose sight of the bigger picture
-                again.
-              </p>
-            </div>
-          </div>
+              <div>
+                <h3 className="hidden mb-4 text-lg font-bold md:block">
+                  {point.header}
+                </h3>
+                <p className="text-darkGrayishBlue">{point.body}</p>
+              </div>
+            </motion.div>
+          ))}
 
           {/* List Item 2 */}
-          <div className='flex flex-col space-y-3 md:space-y-0 md:space-x-6 md:flex-row'>
-            {/* Heading */}
-            <div className='rounded-l-full bg-brightRedSupLight md:bg-transparent'>
-              <div className='flex items-center space-x-2'>
-                <div className='px-4 py-2 text-white rounded-full md:py-1 bg-brightRed'>
-                  02
-                </div>
-                <h3 className='text-base font-bold md:mb-4 md:hidden'>
-                  Advanced built-in reports
-                </h3>
-              </div>
-            </div>
-
-            <div>
-              <h3 className='hidden mb-4 text-lg font-bold md:block'>
-                Advanced built-in reports
-              </h3>
-              <p className='text-darkGrayishBlue'>
-                Set internal delivery estimates and track progress toward
-                company goals. Our customisable dashboard helps you build out
-                the reports you need to keep key stakeholders informed.
-              </p>
-            </div>
-          </div>
 
           {/* List Item 3 */}
-          <div className='flex flex-col space-y-3 md:space-y-0 md:space-x-6 md:flex-row'>
-            {/* Heading */}
-            <div className='rounded-l-full bg-brightRedSupLight md:bg-transparent'>
-              <div className='flex items-center space-x-2'>
-                <div className='px-4 py-2 text-white rounded-full md:py-1 bg-brightRed'>
-                  03
-                </div>
-                <h3 className='text-base font-bold md:mb-4 md:hidden'>
-                  Everything you need in one place
-                </h3>
-              </div>
-            </div>
-
-            <div>
-              <h3 className='hidden mb-4 text-lg font-bold md:block'>
-                Everything you need in one place
-              </h3>
-              <p className='text-darkGrayishBlue'>
-                Stop jumping from one service to another to communicate, store
-                files, track tasks and share documents. Manage offers an
-                all-in-one team productivity solution.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
