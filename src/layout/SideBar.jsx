@@ -12,7 +12,7 @@ const navItems = [
     path: "/invoice/dashboard",
     icon: Home,
   },
-  { id: 2, name: "Create Invoice", path: "/customers", icon: User },
+  { id: 2, name: "Create Invoice", path: "/invoice/create-invoice", icon: User },
   { id: 3, name: "Contracts", path: "/invoice/multiparty", icon: ChartArea },
   { id: 4, name: "Transaction History", path: "/settings", icon: Settings },
 ];
