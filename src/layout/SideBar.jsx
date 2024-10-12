@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 import logo from '../assets/images/logo.png'
-import {User, ChartArea, Settings, Home, ArrowBigLeft, ArrowBigRight, X} from 'lucide-react'
+import {User, ChartArea, Settings, Home, ArrowBigLeft, ArrowBigRight, X, History} from 'lucide-react'
 
 // Dummy nav items
 const navItems = [
@@ -14,7 +14,7 @@ const navItems = [
   },
   { id: 2, name: "Create Invoice", path: "/invoice/create-invoice", icon: User },
   { id: 3, name: "Contracts", path: "/invoice/multiparty", icon: ChartArea },
-  { id: 4, name: "Transaction History", path: "/settings", icon: Settings },
+  { id: 4, name: "Transaction History", path: "/invoice/transaction-history", icon: History },
 ];
 
 const SideBar = ({opened, setOpened}) => {
