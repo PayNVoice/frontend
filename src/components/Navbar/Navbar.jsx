@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import companyLogo from '../../assets/images/logo.svg';
+import logo from '../../assets/images/logo.png';
+import ConnectWalletButton from '../customButtons/ConnectWalletButton';
 
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -11,38 +12,13 @@ const Navbar = () => {
       {/* Flex Container */}
       <div className='flex items-center justify-between'>
         {/* Logo */}
-        <div className='pt-2'>
-          payNvoice
-          {/* <img src={companyLogo} alt='' /> */}
+        <div className=' bg-black'>
+          <img src={logo} className='w-28 h-12' alt='' />
         </div>
-        {/* Menu Items */}
-        {/* <div className='hidden space-x-6 md:flex'>
-          <Link to='#' className='hover:text-darkGrayishBlue'>
-            Pricing
-          </Link>
-          <Link to='#' className='hover:text-darkGrayishBlue'>
-            Product
-          </Link>
-          <Link to='#' className='hover:text-darkGrayishBlue'>
-            About Us
-          </Link>
-          <Link to='#' className='hover:text-darkGrayishBlue'>
-            Careers
-          </Link>
-          <Link to='#' className='hover:text-darkGrayishBlue'>
-            Community
-          </Link>
-        </div> */}
-        {/* Button */}
-        <Link
-          to='/invoice/dashboard'
-          className='hidden p-3 px-6 pt-2 text-white bg-blue-500 rounded-full baseline hover:bg-blue-700 md:block'
-        >
-          Get Started
-        </Link>
+        <ConnectWalletButton/>
 
         {/* Hamburger Icon */}
-        <button
+        {/* <button
           className={
             toggleMenu
               ? 'open block hamburger md:hidden focus:outline-none'
@@ -53,7 +29,7 @@ const Navbar = () => {
           <span className='hamburger-top'></span>
           <span className='hamburger-middle'></span>
           <span className='hamburger-bottom'></span>
-        </button>
+        </button> */}
       </div>
 
       {/* Mobile Menu */}
