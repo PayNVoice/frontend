@@ -1,4 +1,5 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { Wallet } from 'lucide-react';
  const ConnectWalletButton = () => {
   return (
     <ConnectButton.Custom>
@@ -34,48 +35,22 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type="button">
-                    Connect Wallet
+                  <button className='flex bg-gradient-to-r to-[#568ce2] from-[#1f3a63] text-white rounded-md p-2' onClick={openConnectModal} type="button">
+                   <Wallet className='mr-2'/> Connect Wallet
                   </button>
                 );
               }
               if (chain.unsupported) {
                 return (
-                  <button onClick={openChainModal} type="button">
+                  <button className='flex bg-gradient-to-r to-[#568ce2] from-[#1f3a63] text-white rounded-md p-3' onClick={openChainModal} type="button">
                     Wrong network
                   </button>
                 );
               }
               return (
-                <div style={{ display: 'flex', gap: 12 }}>
-                  <button
-                    onClick={openChainModal}
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    type="button"
-                  >
-                    {chain.hasIcon && (
-                      <div
-                        style={{
-                          background: chain.iconBackground,
-                          width: 12,
-                          height: 12,
-                          borderRadius: 999,
-                          overflow: 'hidden',
-                          marginRight: 4,
-                        }}
-                      >
-                        {chain.iconUrl && (
-                          <img
-                            alt={chain.name ?? 'Chain icon'}
-                            src={chain.iconUrl}
-                            style={{ width: 12, height: 12 }}
-                          />
-                        )}
-                      </div>
-                    )}
-                    {chain.name}
-                  </button>
-                  <button onClick={openAccountModal} type="button">
+                <div className='flex bg-gradient-to-r to-[#568ce2] from-[#1f3a63] font-semibold text-white rounded-md p-2' style={{ display: 'flex', gap: 12 }}>
+                 
+                  <button  onClick={openAccountModal} type="button">
                     {account.displayName}
                     {account.displayBalance
                       ? ` (${account.displayBalance})`
