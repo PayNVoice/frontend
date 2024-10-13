@@ -24,13 +24,13 @@ const Features = () => {
   return (
     <motion.section id="features" variants={staggerContainer(0.5, 0.3)}>
       {/* Flex Container */}
-      <div className="container flex flex-col px-4 mx-auto mt-10 space-y-12 md:space-y-0 md:flex-row">
+      <div className="container font-roboto flex flex-col px-9  mx-auto mt-10 space-y-12 md:space-y-0 md:flex-row">
         {/* What's Different */}
         <motion.div className="flex flex-col space-y-12 md:w-1/2">
           <h2 className="max-w-md text-4xl font-bold text-center md:text-left">
             What do we do?
           </h2>
-          <p className="max-w-sm text-center text-darkGrayishBlue md:text-left">
+          <p className="max-w-sm text-center text-lg text-gray-600 md:text-left">
             From escrow services to milestone-based payments, our platform is
             built for businesses ready to adopt the future of secure, digital
             transactions.
@@ -49,7 +49,7 @@ const Features = () => {
               className="flex flex-col space-y-3 md:space-y-0 md:space-x-6 md:flex-row"
             >
               {/* Heading */}
-              <div className="rounded-l-full bg-brightRedSupLight md:bg-transparent">
+              <div className="rounded-l-full  bg-brightRedSupLight md:bg-transparent">
                 <div className="flex items-center space-x-2">
                   <div className="px-4 py-2 text-white rounded-full md:py-1 bg-blue-500">
                     {point.number}
@@ -61,10 +61,10 @@ const Features = () => {
               </div>
 
               <div>
-                <h3 className="hidden mb-4 text-lg font-bold md:block">
+                <h3 className="hidden mb-4 text-xl font-bold md:block">
                   {point.header}
                 </h3>
-                <p className="text-darkGrayishBlue">{point.body}</p>
+                <p className="text-lg text-gray-600">{point.body}</p>
               </div>
             </motion.div>
           ))}

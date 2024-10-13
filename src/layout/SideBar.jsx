@@ -28,10 +28,10 @@ const SideBar = ({opened, setOpened}) => {
   }, [location]);
 
   return (
-    <div className={`${opened ? "w-60 md:w-0 z-10":"w-60 z-10 hidden"} fixed justify-center space-y-10 md:flex md:flex-col bg-gradient-to-b to-[#568ce2] from-[#1f3a63]  py-3 shadow-md h-screen`}>
+    <div className={`${opened ? "w-60 md:w-0 z-10":"w-60 z-10 hidden"} fixed space-y-7 md:flex md:flex-col bg-gradient-to-b to-[#568ce2] from-[#1f3a63] py-3 shadow-md h-screen`}>
       <div className="">
       <X  onClick={()=>setOpened(false)} className="cursor-pointer ml-52 mt-2 justify-end rounded-full  text-white md:hidden flex" />
-      <Link to="/" className="pb-20">
+      <Link to="/" className="">
           <img src={logo} alt="logo" className="h-24 w-full" />
       </Link>
       </div>
@@ -42,10 +42,10 @@ const SideBar = ({opened, setOpened}) => {
           <NavLink
             key={item.id}
             to={item.path}
-            className={`w-5/6  text-white font-roboto text-base font-semibold cursor-pointer py-2 gap-3 flex items-center px-3 ${
+            className={`w-5/6  text-white font-roboto text-base font-bold cursor-pointer py-2 gap-3 flex items-center px-3 ${
               activeNav === item.path
-                ? "bg-cyan-500 border-cyan-400 text-cyan-700"
-                : "hover:bg-cyan-500 text-gray-400"
+                ? "bg-blue-500 border-cyan-400 text-cyan-700"
+                : "hover:bg-blue-500 text-gray-400"
             }`}
             onClick={() => setActiveNav(item.path)}
           >

@@ -1,4 +1,6 @@
 import React from 'react'
+import * as Tabs from "@radix-ui/react-tabs";
+import DialogModal from '../../components/createInvoice/CreateInvoice';
 
 const Multiparty = () => {
     const contracts = [
@@ -48,9 +50,14 @@ const Multiparty = () => {
       
   return (
     <>
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">Active Contracts</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <DialogModal/>
+  <Tabs.Root defaultValue="tab1" className='py-14 ' orientation="vertical">
+		<Tabs.List aria-label="tabs" className='font-semibold bg-gradient-to-r to-[#568ce2] from-[#1f3a63] p-4 mb-7 text-gray-800 flex gap-4'>
+			<Tabs.Trigger className="TabsTrigger shadow-lg rounded-md text-base" value="tab1">Created Invoice </Tabs.Trigger>
+			<Tabs.Trigger className="TabsTrigger shadow-lg rounded-md text-base" value="tab2">Invoice Created For You</Tabs.Trigger>
+		</Tabs.List>
+		<Tabs.Content value="tab1">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {contracts.map((contract, index) => (
           <div
             key={index}
@@ -67,7 +74,29 @@ const Multiparty = () => {
           </div>
         ))}
       </div>
-    </div>
+    </Tabs.Content>
+		<Tabs.Content value="tab2">
+       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {contracts.map((contract, index) => (
+          <div
+            key={index}
+            className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
+          >
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">{contract.title}</h3>
+            <p className="text-sm text-gray-500">{contract.parties} Parties</p>
+            <p className="text-sm text-gray-500 mb-4">Total Value: {contract.totalValue}</p>
+            <span
+              className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${contract.statusColor}`}
+            >
+              {contract.status}
+            </span>
+          </div>
+        ))}
+      </div>
+    </Tabs.Content>
+	</Tabs.Root>
+
+
     
     </>
   )
