@@ -9,7 +9,7 @@ const Footer = () => {
       <footer className="bg-gray-800 text-white py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <img src={logo} className='w-40 h-20' alt='' />
+            <img src={logo} className='w-52 h-20' alt='' />
             <div className="flex space-x-4">
               <a href="#" className="hover:text-purple-400 transition-colors">Terms</a>
               <a href="#" className="hover:text-purple-400 transition-colors">Privacy</a>

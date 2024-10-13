@@ -28,7 +28,7 @@ const SideBar = ({opened, setOpened}) => {
   }, [location]);
 
   return (
-    <div className={`${opened ? "w-60 md:w-0 z-10":"w-60 z-10 hidden"} fixed space-y-7 md:flex md:flex-col bg-blue-600  py-3 shadow-md h-screen`}>
+    <div className={`${opened ? "w-60 md:w-0 z-10":"w-60 z-10 hidden"} fixed space-y-7 md:flex md:flex-col bg-gradient-to-b to-[#568ce2] from-[#1f3a63] py-3 shadow-md h-screen`}>
       <div className="">
       <X  onClick={()=>setOpened(false)} className="cursor-pointer ml-52 mt-2 justify-end rounded-full  text-white md:hidden flex" />
       <Link to="/" className="">

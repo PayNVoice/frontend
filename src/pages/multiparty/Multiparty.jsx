@@ -1,6 +1,6 @@
 import React from 'react'
-
 import * as Tabs from "@radix-ui/react-tabs";
+import DialogModal from '../../components/createInvoice/CreateInvoice';
 
 const Multiparty = () => {
     const contracts = [
@@ -50,8 +50,9 @@ const Multiparty = () => {
       
   return (
     <>
+  <DialogModal/>
   <Tabs.Root defaultValue="tab1" className='py-14 ' orientation="vertical">
-		<Tabs.List aria-label="tabs" className='font-semibold bg-blue-600 p-4 mb-7 text-gray-800 flex gap-4'>
+		<Tabs.List aria-label="tabs" className='font-semibold bg-gradient-to-r to-[#568ce2] from-[#1f3a63] p-4 mb-7 text-gray-800 flex gap-4'>
 			<Tabs.Trigger className="TabsTrigger shadow-lg rounded-md text-base" value="tab1">Created Invoice </Tabs.Trigger>
 			<Tabs.Trigger className="TabsTrigger shadow-lg rounded-md text-base" value="tab2">Invoice Created For You</Tabs.Trigger>
 		</Tabs.List>
