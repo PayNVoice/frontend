@@ -1,6 +1,6 @@
 const SummaryCard = ({ title, value }) => {
   return (
-    <div className="summary-card w-[200px] h-[120px] p-[16px]  bg-white border-grey border-[1px] border-solid rounded-md shadow-md ">
+    <div className="summary-card h-[160px] p-[16px]  bg-white border-grey border-[1px] border-solid rounded-md shadow-md ">
       <p className="title mb-4 text-[14px] text-[black] ">{title}</p>
       <p className="title  text-[18px] text-[black] font-semibold">{value}</p>
     </div>
@@ -9,7 +9,7 @@ const SummaryCard = ({ title, value }) => {
 const Overview = () => {
   return (
     <div className="dashboard-overview py-8">
-      <div className="summary-cards-container flex gap-4 items-center flex-wrap">
+      <div className="summary-cards-container grid grid-cols-3 gap-4 items-center ">
         <SummaryCard title="Pending Invoices" value={6} />
         <SummaryCard title="Active Contracts" value={18} />
         <SummaryCard title="Total Value Locked" value={"$45,230"} />

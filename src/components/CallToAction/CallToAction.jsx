@@ -1,22 +1,27 @@
+import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const CallToAction = () => {
   return (
-    <section id='cta' className='bg-blue-500'>
-      {/* Flex Container */}
-      <div className='container flex flex-col items-center justify-between px-6 py-24 mx-auto space-y-12 md:py-12 md:flex-row md:space-y-0'>
-        {/* Heading */}
-         <h2 className='text-5xl font-bold leading-tight text-center text-white md:text-4xl md:max-w-xl md:text-left'>
-        Transform the Way You Do Business.
-        </h2>
-        {/* Button */}
-        <div>
-          <Link
-            to='/invoice/dashboard'
-            className='p-3 px-6 pt-2 text-brightRed bg-white rounded-full shadow-2xl baseline hover:bg-gray-900 hover:text-white'
-          >
-            Get Started
-          </Link>
+    <section id='cta' className='bg-blue-500 font-roboto '>
+      
+      {/* CTA Section */}
+      <div className="bg-blue-600">
+        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-extrabold text-white">
+              Ready to Transform Your Business?
+            </h2>
+            <p className="mt-4 text-lg text-blue-100">
+              Join thousands of businesses already using SmartInvoice
+            </p>
+            <div className="mt-8">
+              <button className="bg-white flex items-center justify-center m-auto text-blue-700 rounded-lg p-2  ">
+                <span>Get Started Now</span>
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

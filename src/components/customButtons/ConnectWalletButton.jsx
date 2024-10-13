@@ -35,7 +35,7 @@ import { Wallet } from 'lucide-react';
             {(() => {
               if (!connected) {
                 return (
-                  <button className='flex bg-gradient-to-r to-[#568ce2] from-[#244c86] text-white rounded-md p-2' onClick={openConnectModal} type="button">
+                  <button className='flex bg-blue-600 text-white rounded-md p-2' onClick={openConnectModal} type="button">
                    <Wallet className='mr-2'/> Connect Wallet
                   </button>
                 );
@@ -48,7 +48,7 @@ import { Wallet } from 'lucide-react';
                 );
               }
               return (
-                <div className='flex bg-gradient-to-r to-[#568ce2] from-[#1f3a63] text-white rounded-md p-2' style={{ display: 'flex', gap: 12 }}>
+                <div className='flex bg-blue-600 font-semibold text-white rounded-md p-2' style={{ display: 'flex', gap: 12 }}>
                  
                   <button  onClick={openAccountModal} type="button">
                     {account.displayName}

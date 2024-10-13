@@ -93,3 +93,22 @@ body {
   background-color: #111213;
 }
 
+
+.TabsTrigger {
+	background-color: white;
+	padding: 0 20px;
+	height: 40px;
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	user-select: none;
+}
+
+.TabsTrigger:hover {
+	color: rgb(56, 56, 236);
+}
+.TabsTrigger[data-state="active"] {
+	color: white;
+  background-color: rgb(58, 148, 250);
+}

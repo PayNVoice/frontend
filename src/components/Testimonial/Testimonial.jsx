@@ -28,9 +28,9 @@ const Testimonial = () => {
   return (
     <section id="testimonials">
       {/* Container to heading and testm blocks */}
-      <div className="max-w-6xl px-5 mx-auto mt-32 text-center">
+      <div className="max-w-6xl  font-roboto  px-9 mx-auto mt-32 text-center">
         {/* Heading */}
-        <h2 className="text-4xl font-bold text-center">
+        <h2 className="text-4xl font-bold text-gray-800 text-center">
           Hear from some of our users
         </h2>
         {/* Testimonials Container */}
@@ -45,7 +45,7 @@ const Testimonial = () => {
             className="flex  shadow-grey shadow-md flex-col items-center p-6 space-y-6 rounded-lg bg-veryLightGray md:w-1/3">
               <img src={point.image} className="w-16 -mt-14 rounded-full" alt="" />
               <h5 className="text-lg font-bold">{point.name}</h5>
-              <p className="text-sm text-darkGrayishBlue">
+              <p className="text-base text-gray-600">
                 {point.content}
               </p>
             </motion.div>
