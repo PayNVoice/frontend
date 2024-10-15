@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { useAccount } from "wagmi";
+import { useNavigate } from "react-router-dom";
 
 
 const CreateInvoice = () => {
   const account = useAccount();
-  
+  const navigate = useNavigate();
+  const handleCreateInvoice =()=>{
+    navigate("/invoice/invoices")
+  }
+
   return (
     <div className="h-full w-full flex justify-center items-center pt-5">
       <div className="w-full md:w-[1152px] p-5 border border-[#E2E8F0] rounded-lg bg-[#FFFFFF]">
@@ -114,6 +119,7 @@ const CreateInvoice = () => {
             <div className="w-full flex items-center justify-end">
               <button
                 type="button"
+                onClick={handleCreateInvoice}
                 className="text-white outline-none bg-gradient-to-b to-[#568ce2] from-[#1f3a63] hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"
               >
                 Deploy Contract

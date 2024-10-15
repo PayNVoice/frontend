@@ -1,6 +1,8 @@
 import initialContracts from "./InvoiceList";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Multiparty = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);

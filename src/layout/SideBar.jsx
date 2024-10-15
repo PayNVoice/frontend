@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 import logo from "../assets/images/logo.png";
-import { User, ChartArea, Home, X, History } from "lucide-react";
+import { User, ChartArea, TreePine, Home, X, History } from "lucide-react";
 
 // Dummy nav items
 const navItems = [
@@ -18,9 +18,10 @@ const navItems = [
 		path: "/invoice/create-invoice",
 		icon: User,
 	},
-	{ id: 3, name: "Contracts", path: "/invoice/multiparty", icon: ChartArea },
+	{ id: 3, name: "Invoices", path: "/invoice/invoices", icon: TreePine },
+	{ id: 4, name: "Contracts", path: "/invoice/multiparty", icon: ChartArea },
 	{
-		id: 4,
+		id: 5,
 		name: "Transaction History",
 		path: "/invoice/transaction-history",
 		icon: History,
