@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import invoicesarray from "./details";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useReadContract } from 'wagmi'
@@ -36,13 +36,23 @@ const Invoices = ({
 
     const result = useReadContract({
       abi:abi,
-      address: '0x58BA61c7Ba4923615c4c942D5164d8Cfa87df37C',
-      functionName: 'getInvoice',
-      account: account.address,
-      args: [0],
+      address: '0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7',
+      functionName: 'generateAllInvoice'
     })
 
-    console.log("hello",result.data);
+    const result1 = useReadContract({
+        abi:abi,
+        address: '0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7',
+        functionName: 'invoices',
+        account: account.address,
+        args: ['0x46A74e56ed132ed0142508160119Cf105b21820a',1],
+      })
+
+    useEffect(() => {
+
+        console.log("helloworld",result.data);
+        console.log("hello",result1.data);
+    },[result.data])
 
 	// const handleConfirmDelivery = (index) => {
 	// 	console.log(`Delivery confirmed for ${invoices[index].title}`);
