@@ -2,10 +2,21 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAccount } from "wagmi";
+import { useNavigate } from "react-router-dom";
 
 const RootLayout = () => {
+  const account = useAccount();
+  const route = useNavigate();
   const [opened, setOpened] = useState(false);
+
+  useEffect(() => {
+    if (account.isDisconnected) {
+      route("/");
+    }
+  }, []);
+  
 
   return (
     <div className="w-full flex">
