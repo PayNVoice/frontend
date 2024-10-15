@@ -15,7 +15,7 @@ const RootLayout = () => {
     if (account.isDisconnected) {
       route("/");
     }
-  }, [account.isConnected, route]);
+  }, []);
   
 
   return (

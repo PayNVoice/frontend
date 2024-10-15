@@ -28,3 +28,23 @@ const invoicesarray = [
   ];
 
   export default invoicesarray;
+
+
+// import { useReadContract } from 'wagmi'
+// import abi from '../../config/abi'
+// import { useAccount } from 'wagmi';
+
+//   function ReadContract() {
+//     const account = useAccount();
+    
+
+//     const result = useReadContract({
+//       abi:abi,
+//       address: '0x58BA61c7Ba4923615c4c942D5164d8Cfa87df37C',
+//       functionName: 'getInvoice',
+//       account: account.address,
+//     })
+
+//     console.log("hello",result.data);
+    
+//   }
