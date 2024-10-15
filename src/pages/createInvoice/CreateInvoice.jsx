@@ -1,17 +1,64 @@
 import { useState } from "react";
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
+import { useWriteContract } from "wagmi";
+import { ToastContainer, toast } from "react-toastify";
+import { parseEther } from "viem";
+import abi from "../../config/abi"
+
 
 
 const CreateInvoice = () => {
+
+  const [customerAddress, setCustomerAddress] = useState('');
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState('');
+  const [paymentTerm, setPaymentTerm] = useState('');
+  const [additionalConditions, setAdditionalConditions] = useState('');
+  const [currency, setCurrency] = useState('');
+  
+
+  const {writeContractAsync} = useWriteContract();
+
   const account = useAccount();
   const navigate = useNavigate();
-  const handleCreateInvoice =()=>{
-    navigate("/invoice/invoices")
-  }
+
+
+  const contractAddress = "0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7";
+
+
+  const handleCreateInvoice = async () => {
+    try {
+      // Convert amount to wei (1 ether = 10^18 wei)
+      const amountInWei = parseEther(amount);
+
+      // Convert date to Unix timestamp
+      const dueDateTimestamp = Math.floor(new Date(date).getTime() / 1000);
+
+      const tx = await writeContractAsync({
+        address: contractAddress,
+        abi: abi,
+        functionName: "createInvoice",
+        args: [
+          customerAddress,
+          amountInWei,
+          dueDateTimestamp,
+          paymentTerm,
+          additionalConditions      
+        ],
+      });
+
+      
+      toast.success("Invoice Created Successfully");
+    } catch (err) {
+      console.error("Error creating invoice:", err);
+      toast.error("Error creating invoice: " + err.message);
+    }
+  };
 
   return (
     <div className="h-full w-full flex justify-center items-center pt-5">
+      <ToastContainer />
       <div className="w-full md:w-[1152px] p-5 border border-[#E2E8F0] rounded-lg bg-[#FFFFFF]">
         <div className="w-full flex justify-center items-center flex-col gap-4">
           <p className="font-bold">Client Information</p>
@@ -29,6 +76,8 @@ const CreateInvoice = () => {
                 className="bg-gray-50 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="0x000000000...."
                 required
+                value={customerAddress}
+                onChange={(e) => setCustomerAddress(e.target.value)}  
               />
             </div>
 
@@ -46,6 +95,8 @@ const CreateInvoice = () => {
                   className="bg-gray-50 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="0.001"
                   required
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
 
@@ -56,13 +107,17 @@ const CreateInvoice = () => {
                 >
                   Currency
                 </label>
-                <input
-                  type="email"
-                  id="email"
+                <select
+                  id="currency"
                   className="bg-gray-50 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="ETH"
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
                   required
-                />
+                  >
+                  <option value="USDT">USDT</option>
+                  <option value="USDC">USDC</option>
+                  <option value="LSK">LSK</option>
+                </select>
               </div>
             </div>
 
@@ -80,6 +135,8 @@ const CreateInvoice = () => {
                   className="bg-gray-50 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="ETH"
                   required
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
                 />
               </div>
 
@@ -98,6 +155,8 @@ const CreateInvoice = () => {
                 rows="4"
                 className="block p-2.5 w-full outline-none text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Leave a comment..."
+                value={paymentTerm}
+                onChange={(e) => setPaymentTerm(e.target.value)}
               ></textarea>
             </div>
 
@@ -113,6 +172,8 @@ const CreateInvoice = () => {
                 rows="4"
                 className="block p-2.5 outline-none w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Leave a comment..."
+                value={additionalConditions}
+                onChange={(e) => setAdditionalConditions(e.target.value)}
               ></textarea>
             </div>
 
@@ -122,7 +183,7 @@ const CreateInvoice = () => {
                 onClick={handleCreateInvoice}
                 className="text-white outline-none bg-gradient-to-b to-[#568ce2] from-[#1f3a63] hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"
               >
-                Deploy Contract
+                  Create Invoice
               </button>
             </div>
           </div>
