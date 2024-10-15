@@ -71,7 +71,7 @@ const Multiparty = () => {
                   <>
                   <div className="flex justify-between space-x-2">
                     <button
-                      className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
                       onClick={() => handleAccept(index)}
                     >
                       Accept
