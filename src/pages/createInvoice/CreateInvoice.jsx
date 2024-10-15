@@ -1,14 +1,60 @@
 import { useState } from "react";
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
+import { useWriteContract } from "wagmi";
+import { ToastContainer, toast } from "react-toastify";
+import { parseEther } from "viem";
+import abi from "../../config/abi"
+
 
 
 const CreateInvoice = () => {
+
+  const [customerAddress, setCustomerAddress] = useState('');
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState('');
+  const [paymentTerm, setPaymentTerm] = useState('');
+  const [additionalConditions, setAdditionalConditions] = useState('');
+  const [currency, setCurrency] = useState('');
+  
+
+  const {writeContractAsync} = useWriteContract();
+
   const account = useAccount();
   const navigate = useNavigate();
-  const handleCreateInvoice =()=>{
-    navigate("/invoice/invoices")
-  }
+
+
+  const contractAddress = "0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7";
+
+
+  const handleCreateInvoice = async () => {
+    try {
+      // Convert amount to wei (1 ether = 10^18 wei)
+      const amountInWei = parseEther(amount);
+
+      // Convert date to Unix timestamp
+      const dueDateTimestamp = Math.floor(new Date(date).getTime() / 1000);
+
+      const tx = await writeContractAsync({
+        address: contractAddress,
+        abi: abi,
+        functionName: "createInvoice",
+        args: [
+          customerAddress,
+          amountInWei,
+          dueDateTimestamp,
+          paymentTerm,
+          additionalConditions      
+        ],
+      });
+
+      
+      toast.success("Invoice Created Successfully");
+    } catch (err) {
+      console.error("Error creating invoice:", err);
+      toast.error("Error creating invoice: " + err.message);
+    }
+  };
 
   return (
     <div className="h-full w-full flex justify-center items-center pt-5">
@@ -61,13 +107,17 @@ const CreateInvoice = () => {
                 >
                   Currency
                 </label>
-                <input
-                  type="email"
-                  id="email"
+                <select
+                  id="currency"
                   className="bg-gray-50 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="ETH"
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
                   required
-                />
+                  >
+                  <option value="USDT">USDT</option>
+                  <option value="USDC">USDC</option>
+                  <option value="LSK">LSK</option>
+                </select>
               </div>
             </div>
 
@@ -130,13 +180,8 @@ const CreateInvoice = () => {
             <div className="w-full flex items-center justify-end">
               <button
                 type="button"
-<<<<<<< HEAD
-                className="text-white bg-gradient-to-b to-[#568ce2] from-[#1f3a63] hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"
-                onClick={handleCreateInvoice}
-=======
                 onClick={handleCreateInvoice}
                 className="text-white outline-none bg-gradient-to-b to-[#568ce2] from-[#1f3a63] hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"
->>>>>>> 5005657cdb26c55ef1231bacdb5df80d9ba621da
               >
                   Create Invoice
               </button>
