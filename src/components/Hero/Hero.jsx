@@ -1,9 +1,21 @@
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import illustrationIntro from '../../assets/images/illustration-intro.svg';
 import illustration from '../../assets/images/illustration.avif'
+import { useAccount } from "wagmi";
 
 const Hero = () => {
+  const account = useAccount();
+  const route = useNavigate();
+
+  const handleRoute = () => {
+    if(account.isConnected){
+      route("/invoice/dashboard");
+    }
+    else{
+      
+    }
+  }
   return (
     <section id='hero'>
       {/* Flex Container */}
