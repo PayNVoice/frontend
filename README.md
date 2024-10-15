@@ -34,22 +34,23 @@ Before starting the project, ensure you have the following installed on your sys
 
 ## Folder Structure
 
-├── public/                # Static assets
-├── src/
-│   ├── app/               # Main application 
-│   ├── assets/            # Static files (images, icons, etc.)
-│   ├── components/        # Reusable UI components
-│   ├── config/            # Application configuration settings
-│   ├── layout/            # Page layout components
-│   ├── pages/             # Application pages and views
-│   ├── router/            # Routing configurations
-│   ├── utils/             # Utility functions and helpers
-│   └── connection.js      # Web3 and wallet connection logic
-├── .env                   # Environment variables (e.g., contract addresses)
-├── index.html             # Main HTML entry point
-├── package.json           # Project dependencies and scripts
-├── vite.config.js         # Vite configuration
-├── postcss.config.js      # PostCSS configuration
-├── .gitignore             # Files and directories to ignore in Git
-├── eslint.config.js       # ESLint configuration for linting JavaScript/React code
-└── src/main.jsx           # Main entry point for React application
+├── public/ # Static assets   
+├── src/    # Main application 
+
+│   ├── app/ # Main application              
+│   ├── assets/ # Static files (images, icons, etc.)          
+│   ├── components/ # Reusable UI components        
+│   ├── config/ # Application configuration settings           
+│   ├── layout/ # Page layout components            
+│   ├── pages/ # Application pages and views            
+│   ├── router/ # Routing configurations          
+│   ├── utils/ # Utility functions and helpers            
+│   ├── connection.js # Web3 and wallet connection logic   
+│   └── main.jsx # Main entry point for React application         
+├── .env # Environment variables (e.g., contract addresses)                 
+├── index.html # Main HTML entry point          
+├── package.json # Project dependencies and scripts          
+├── vite.config.js  # Vite configuration       
+├── postcss.config.js # PostCSS configuration    
+├── .gitignore # Files and directories to ignore in Git            
+└── eslint.config.js # ESLint configuration for linting JavaScript/React code      
