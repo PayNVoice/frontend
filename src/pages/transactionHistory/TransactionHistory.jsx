@@ -70,9 +70,14 @@ const TransactionHistory = () => {
               {/* Add more rows as needed */}
             </tbody>
           </table>
-  
+
+          <div className='history-buttom flex justify-between bottom-9'>
           <div className="pagination mt-4">
             <p className="text-sm text-gray-500">Showing 1-10 of 24</p>
+          </div>
+          <button className='flex bg-gradient-to-r to-[#568ce2] from-[#1f3a63] text-white rounded-md p-2' type="button">
+                   Download transaction history
+          </button>
           </div>
         </div>
     //   </div>
