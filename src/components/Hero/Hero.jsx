@@ -1,12 +1,27 @@
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
-import illustrationIntro from '../../assets/images/illustration-intro.svg';
 import illustration from '../../assets/images/illustration.avif'
+import { useAccount } from "wagmi";
 
 const Hero = () => {
+  const account = useAccount();
+  const route = useNavigate();
+
+  const handleRoute = () => {
+    if(account.isConnected){
+      route("/invoice/dashboard");
+    }
+    else{
+      toast.error("Please connect your wallet");
+    }
+  }
   return (
     <section id='hero'>
       {/* Flex Container */}
+      <ToastContainer />
       <div className='container font-roboto flex flex-col-reverse items-center px-9 md:px-6 mx-auto mt-10 space-y-0 md:space-y-0 md:flex-row'>
         {/* Left Item */}
         <div className='flex flex-col mb-32 space-y-12 md:w-1/2'>
@@ -17,12 +32,11 @@ const Hero = () => {
               Streamline your invoicing and payments with blockchain technology. Secure, automated, and transparent business transactions for the Web3 era.      
           </p>
           <div className='flex justify-center md:justify-start'>
-            <Link
-              to='/invoice/dashboard'
+            <button onClick={handleRoute}
               className='p-3 px-6 text-white shadow-md bg-gradient-to-r to-[#568ce2] from-[#1f3a63] rounded-xl baseline hover:bg-blue-700'
             >
               Get Started
-            </Link>
+            </button>
           </div>
         </div>
         {/* Image */}
