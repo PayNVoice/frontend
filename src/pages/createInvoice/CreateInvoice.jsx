@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
-import { useWriteContract } from "wagmi";
+import { useWriteContract,useWaitForTransactionReceipt } from "wagmi";
 import { ToastContainer, toast } from "react-toastify";
 import { parseEther } from "viem";
 import abi from "../../config/abi"
@@ -16,9 +16,10 @@ const CreateInvoice = () => {
   const [paymentTerm, setPaymentTerm] = useState('');
   const [additionalConditions, setAdditionalConditions] = useState('');
   const [currency, setCurrency] = useState('');
+  const [txHash, setTxHash] = useState(null);
   
 
-  const {writeContractAsync} = useWriteContract();
+  const {writeContractAsync,isPending} = useWriteContract();
 
   const account = useAccount();
   const navigate = useNavigate();
@@ -45,16 +46,29 @@ const CreateInvoice = () => {
           dueDateTimestamp,
           paymentTerm,
           additionalConditions      
-        ],
+        ]
       });
 
-      
-      toast.success("Invoice Created Successfully");
+      console.log("tx::",tx);
+      setTxHash(tx); 
+      toast.info("Transaction submitted. Waiting for confirmation...")    
     } catch (err) {
       console.error("Error creating invoice:", err);
       toast.error("Error creating invoice: " + err.message);
     }
   };
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+  useWaitForTransactionReceipt({
+    hash: txHash,
+  });
+
+  useEffect(() => {
+    if (isConfirmed) {
+      toast.success("Invoice Created Successfully");
+      navigate("/invoice/invoices");
+    }
+  }, [isConfirmed]);
 
   return (
     <div className="h-full w-full flex justify-center items-center pt-5">
@@ -181,9 +195,10 @@ const CreateInvoice = () => {
               <button
                 type="button"
                 onClick={handleCreateInvoice}
+                disabled={isPending}
                 className="text-white outline-none bg-gradient-to-b to-[#568ce2] from-[#1f3a63] hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"
               >
-                  Create Invoice
+                {isPending ? "Creating Invoice..." : "Create Invoice"}
               </button>
             </div>
           </div>
