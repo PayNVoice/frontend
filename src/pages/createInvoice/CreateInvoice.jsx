@@ -48,7 +48,7 @@ const CreateInvoice = () => {
           additionalConditions      
         ]
       });
-
+      
       console.log("tx::",tx);
       setTxHash(tx); 
       toast.info("Transaction submitted. Waiting for confirmation...")    
@@ -57,16 +57,17 @@ const CreateInvoice = () => {
       toast.error("Error creating invoice: " + err.message);
     }
   };
-
+  
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
   useWaitForTransactionReceipt({
     hash: txHash,
   });
 
+
   useEffect(() => {
     if (isConfirmed) {
       toast.success("Invoice Created Successfully");
-      navigate("/invoice/invoices");
+      // navigate("/invoice/invoices");
     }
   }, [isConfirmed]);
 
