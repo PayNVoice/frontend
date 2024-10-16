@@ -95,7 +95,7 @@ body {
 
 
 .TabsTrigger {
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.273);
 	padding: 0 20px;
 	height: 40px;
 	flex: 1;
@@ -106,11 +106,11 @@ body {
 }
 
 .TabsTrigger:hover {
-	color: rgb(56, 56, 236);
+	color: white;
 }
 .TabsTrigger[data-state="active"] {
-	color: white;
-  background-color: rgb(25, 121, 231);
+	color: rgb(25, 121, 231);
+  background-color: white;
 }
 
 

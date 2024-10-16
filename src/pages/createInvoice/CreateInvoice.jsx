@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
-import { useWriteContract } from "wagmi";
+import { useWriteContract,useWaitForTransactionReceipt } from "wagmi";
 import { ToastContainer, toast } from "react-toastify";
 import { parseEther } from "viem";
 import abi from "../../config/abi"
+import { contractAddress } from "../../config/contractAddress";
 
 
 
@@ -14,18 +15,16 @@ const CreateInvoice = () => {
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
   const [paymentTerm, setPaymentTerm] = useState('');
+  const [title, setTitle] = useState('');
   const [additionalConditions, setAdditionalConditions] = useState('');
   const [currency, setCurrency] = useState('');
+  const [txHash, setTxHash] = useState(null);
   
 
-  const {writeContractAsync} = useWriteContract();
+  const {writeContractAsync,isPending} = useWriteContract();
 
   const account = useAccount();
   const navigate = useNavigate();
-
-
-  const contractAddress = "0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7";
-
 
   const handleCreateInvoice = async () => {
     try {
@@ -43,17 +42,32 @@ const CreateInvoice = () => {
           customerAddress,
           amountInWei,
           dueDateTimestamp,
+          additionalConditions,
           paymentTerm,
-          additionalConditions      
-        ],
+          title   
+        ]
       });
 
-    toast.success("Invoice Created Successfully");
+      console.log("tx::",tx);
+      setTxHash(tx); 
+      toast.info("Transaction submitted. Waiting for confirmation...")    
     } catch (err) {
       console.error("Error creating invoice:", err);
       toast.error("Error creating invoice: " + err.message);
     }
   };
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+  useWaitForTransactionReceipt({
+    hash: txHash,
+  });
+
+  useEffect(() => {
+    if (isConfirmed) {
+      toast.success("Invoice Created Successfully");
+      navigate("/invoice/invoices");
+    }
+  }, [isConfirmed]);
 
   return (
     <div className="h-full w-full flex justify-center items-center pt-5">
@@ -64,14 +78,32 @@ const CreateInvoice = () => {
           <div className="w-full md:w-[700px] flex flex-col gap-5">
             <div className="">
               <label
-                htmlFor="email"
+                htmlFor="title"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Title
+              </label>
+              <input
+                type="text"
+                id="title"
+                className="bg-gray-50 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                placeholder="Title"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}  
+              />
+            </div>
+
+            <div className="">
+              <label
+                htmlFor="address"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Client Wallet Address
               </label>
               <input
-                type="email"
-                id="email"
+                type="text"
+                id="address"
                 className="bg-gray-50 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="0x000000000...."
                 required
@@ -180,9 +212,10 @@ const CreateInvoice = () => {
               <button
                 type="button"
                 onClick={handleCreateInvoice}
+                disabled={isPending}
                 className="text-white outline-none bg-gradient-to-b to-[#568ce2] from-[#1f3a63] hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"
               >
-                  Create Invoice
+                {isPending ? "Creating Invoice..." : "Create Invoice"}
               </button>
             </div>
           </div>

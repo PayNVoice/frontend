@@ -1,14 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { useReadContract } from 'wagmi'
+import { useReadContract, useWriteContract } from 'wagmi'
 import abi from '../../config/abi'
 import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
 import AddMilestoneModal from '../../components/Modals/AddMilestoneModal';
 import DepositModal from '../../components/Modals/DepositModal';
-
-const Invoices = ({
-  }) => {
+import { contractAddress } from '../../config/contractAddress';
+import { toast } from 'react-toastify';
+const Invoices = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isMileModalOpen, setIsMileModalOpen] = useState(false);
     const [selectedInvoiceIndex, setSelectedInvoiceIndex] = useState(null);
@@ -16,6 +16,9 @@ const Invoices = ({
     const [depositAmount, setDepositAmount] = useState("");
     const {address} = useAccount();
     const [milestones, setMilestones] = useState([]);
+    const {writeContractAsync} = useWriteContract();
+  
+   
 
     const handleAccept = (index) => {
 		setSelectedInvoiceIndex(index);
@@ -25,13 +28,31 @@ const Invoices = ({
     const handleMilestone = (index) => {
 		setSelectedInvoiceIndex(index);
 		setIsMileModalOpen(true);
-        console.log(index);
         
 	};
+    const Mark = async(index )=>{
+        await writeContractAsync({
+            abi:abi,
+            address: contractAddress,
+            functionName: 'markMilestoneCompleted',
+            account: address,
+            args:[index]
+          })
+          toast.success("marked succesfull");
 
-    const handleAddMilestone = (newMilestone) => {
-        setMilestones([...milestones, newMilestone]);
-      };
+    }
+
+    // const handleAddMilestone = (newMilestone) => {
+    //     const result1 = useReadContract({
+    //         abi:abi,
+    //         address: contractAddress,
+    //         functionName: 'getInvoicesForClient',
+    //         account: address,
+    //         args:['0x46A74e56ed132ed0142508160119Cf105b21820a']
+    //       })
+        
+    //     setMilestones([...milestones, newMilestone]);
+    //   };
 
 	const handleCloseModal = () => {
 		setIsModalOpen(false);
@@ -54,21 +75,20 @@ const Invoices = ({
 	};
 
    
-    
 
     const {data:result, isSuccess, error} = useReadContract({
       abi:abi,
-      address: '0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7',
+      address: contractAddress,
       functionName: 'generateAllInvoice',
       account: address,
     })
 
     const result1 = useReadContract({
         abi:abi,
-        address: '0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7',
-        functionName: 'generateAllInvoice',
+        address: contractAddress,
+        functionName: 'getInvoicesForClient',
         account: address,
-        args:[address]
+        args:['0x46A74e56ed132ed0142508160119Cf105b21820a']
       })
     
     const DateConverter=(timestamp)=>{
@@ -78,10 +98,9 @@ const Invoices = ({
    
 
     useEffect(() => {
-        console.log("rjkkjkr",result1);
         if (isSuccess) {
-            setInvoices(result);
-            console.log("helloworld",result);
+            setInvoices(result1.data);
+            console.log("helloworld",result1.data);
             console.log(invoices);
         }else{
             <p>Loading...</p>
@@ -136,9 +155,10 @@ const Invoices = ({
                     {invoice.milestones.length > 0 ? (
                     <ul className="list-disc text-gray-600 text-sm ml-5">
                         {invoice.milestones.map((milestone, index) => (
-                        <li key={index}>
-                            {milestone.description} - {milestone.amount} ETH -{" "}
-                            <em>{milestone.status}</em>
+                        <li key={index} className='flex space-y-2 justify-between items-center'>
+                            {milestone.description} - {formatEther(milestone.amount)} ETH -{" "}
+                            <em className='bg-yellow-100 rounded-full p-1 px-3'>{milestone.status != 0? "Completed" : "Pending"}</em>
+                            <button onClick={()=> Mark(index)} className='outline-none bg-blue-700 font-roboto font-semibold text-white rounded-md p-2 capitalize boreder-none'>mark as complete</button>
                         </li>
                         ))}
                     </ul>
@@ -187,7 +207,7 @@ const Invoices = ({
         )}
 
         {isMileModalOpen && 
-        <AddMilestoneModal invoices={invoices} selectedInvoiceIndex={selectedInvoiceIndex} onAddMilestone={handleAddMilestone} handleMileCloseModal={handleMileCloseModal}/>
+        <AddMilestoneModal invoices={invoices} selectedInvoiceIndex={selectedInvoiceIndex} handleMileCloseModal={handleMileCloseModal}/>
         }
     </div>
 </>

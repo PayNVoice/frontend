@@ -1,14 +1,19 @@
 import { useState } from 'react';
 import { ToastContainer, toast } from "react-toastify";
 import { parseEther } from "viem";
-import { useWriteContract } from 'wagmi';
+import { useWriteContract,useWaitForTransactionReceipt } from 'wagmi';
 import abi from "../../config/abi"
+import { contractAddress } from '../../config/contractAddress';
 
-const AddMilestoneModal = ({ handleMileCloseModal,invoices,selectedInvoiceIndex, onAddMilestone }) => {
+const AddMilestoneModal = ({ handleMileCloseModal,invoices,selectedInvoiceIndex }) => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [deadline, setDeadline] = useState('');
+  const [id, setId] = useState(selectedInvoiceIndex+1);
   const {writeContractAsync} = useWriteContract();
+  
+
+console.log(id);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,22 +23,26 @@ const AddMilestoneModal = ({ handleMileCloseModal,invoices,selectedInvoiceIndex,
 
       // Convert date to Unix timestamp
       const dueDateTimestamp = Math.floor(new Date(deadline).getTime() / 1000);
-      const contractAddress = "0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7";
-     
+      
       
       const tx = await writeContractAsync({
         address: contractAddress,
         abi: abi,
         functionName: "addMilestone",
         args: [
-          invoices[selectedInvoiceIndex],
+          id,
           description,
           amountInWei,
           dueDateTimestamp,     
         ],
       });
-      onAddMilestone(tx); 
-    toast.success("Milestone Created Successfully");
+      const { isLoading: isConfirming, isSuccess: isConfirmed } =
+      useWaitForTransactionReceipt({
+        hash: tx,
+      });
+      if(isConfirming) toast.info("Transaction is being confirmed");
+      if(isConfirmed)  toast.success("Milestone Created Successfully");
+   
     handleMileCloseModal();
     } catch (err) {
       console.error("Error creating Milestone:", err);
