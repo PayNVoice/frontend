@@ -11,11 +11,7 @@ const RootLayout = () => {
   const route = useNavigate();
   const [opened, setOpened] = useState(false);
 
-  useEffect(() => {
-    if (account.isDisconnected) {
-      route("/");
-    }
-  }, []);
+ 
   
 
   return (
@@ -28,7 +24,7 @@ const RootLayout = () => {
         <NavBar opened={opened} setOpened={setOpened} />
 
         {/* Main content area */}
-        <div className="flex-grow  md:ml-64 ml-0 px-5">
+        <div className="flex-grow relative md:ml-64 ml-0 px-5">
           <Outlet />
         </div>
       </div>

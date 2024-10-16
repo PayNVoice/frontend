@@ -1,19 +1,21 @@
 import initialContracts from "./InvoiceList";
 import * as Tabs from "@radix-ui/react-tabs";
-import { useState,useEffect } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useReadContract } from 'wagmi'
-import abi from '../../config/abi'
-import { useAccount } from 'wagmi';	
+import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useReadContract } from "wagmi";
+import abi from "../../config/abi";
+import { useAccount } from "wagmi";
 import { formatEther } from "viem";
+import { contractAddress } from "../../config/contractAddress";
 
 const Multiparty = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedContractIndex, setSelectedContractIndex] = useState(null);
 	const [contracts, setContracts] = useState(initialContracts);
 	const [depositAmount, setDepositAmount] = useState("");
-	const [invoiceList,setInvoiceList] = useState([])
+	const [invoiceList,setInvoiceList] = useState([]);
+	const account = useAccount();
 
 	const handleAccept = (index) => {
 		setSelectedContractIndex(index);
@@ -39,9 +41,6 @@ const Multiparty = () => {
 	};
 
 
-	const contractAddress = '0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7';
-	const account = useAccount();
-
 	const {data:asyncInvoiceList,isLoading,error,isSuccess} = useReadContract({
         abi:abi,
         address: contractAddress,
@@ -59,10 +58,6 @@ const Multiparty = () => {
 		}
      
 	  },[asyncInvoiceList])
-
-
-	//   the tabs are mixed up, created invoices are the one showing the accept and reject button, when those buttons are for the invoices created for you
-
 
 	return (
 		<>
@@ -119,6 +114,7 @@ const Multiparty = () => {
 				<Tabs.Content value="tab2">
 
 					{/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
 						{contracts.map((contract, index) => (
 							<div
 								key={index}
@@ -205,10 +201,10 @@ const Multiparty = () => {
 							</div>
 						)}
 					</div> */}
-				</Tabs.Content>
-			</Tabs.Root>
-		</>
-	);
+        </Tabs.Content>
+      </Tabs.Root>
+    </>
+  );
 };
 
 export default Multiparty;
