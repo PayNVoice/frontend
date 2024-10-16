@@ -11,11 +11,7 @@ const RootLayout = () => {
   const route = useNavigate();
   const [opened, setOpened] = useState(false);
 
-  useEffect(() => {
-    if (account.isDisconnected) {
-      route("/");
-    }
-  }, []);
+ 
   
 
   return (

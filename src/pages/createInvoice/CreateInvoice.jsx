@@ -48,8 +48,7 @@ const CreateInvoice = () => {
         ],
       });
 
-      
-      toast.success("Invoice Created Successfully");
+    toast.success("Invoice Created Successfully");
     } catch (err) {
       console.error("Error creating invoice:", err);
       toast.error("Error creating invoice: " + err.message);

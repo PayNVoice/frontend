@@ -1,27 +1,49 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import invoicesarray from "./details";
-import * as Tabs from "@radix-ui/react-tabs";
 import { useReadContract } from 'wagmi'
 import abi from '../../config/abi'
 import { useAccount } from 'wagmi';
+import { formatEther } from 'viem';
+import AddMilestoneModal from '../../components/Modals/AddMilestoneModal';
+import DepositModal from '../../components/Modals/DepositModal';
 
 const Invoices = ({
   }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isMileModalOpen, setIsMileModalOpen] = useState(false);
     const [selectedInvoiceIndex, setSelectedInvoiceIndex] = useState(null);
-	const [invoices, setInvoices] = useState(invoicesarray);
+	const [invoices, setInvoices] = useState([]);
     const [depositAmount, setDepositAmount] = useState("");
+    const {address} = useAccount();
+    const [milestones, setMilestones] = useState([]);
 
     const handleAccept = (index) => {
 		setSelectedInvoiceIndex(index);
 		setIsModalOpen(true);
 	};
 
+    const handleMilestone = (index) => {
+		setSelectedInvoiceIndex(index);
+		setIsMileModalOpen(true);
+        console.log(index);
+        
+	};
+
+    const handleAddMilestone = (newMilestone) => {
+        setMilestones([...milestones, newMilestone]);
+      };
+
 	const handleCloseModal = () => {
 		setIsModalOpen(false);
 		setDepositAmount("");
 	};
+
+    const handleMileCloseModal = () => {
+		setIsMileModalOpen(false);
+    
+	};
+
+  
 
 	const handleDeposit = (e) => {
 		e.preventDefault();
@@ -31,28 +53,45 @@ const Invoices = ({
 		handleCloseModal();
 	};
 
-    const account = useAccount();
+   
     
 
-    const result = useReadContract({
+    const {data:result, isSuccess, error} = useReadContract({
       abi:abi,
       address: '0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7',
-      functionName: 'generateAllInvoice'
+      functionName: 'generateAllInvoice',
+      account: address,
     })
 
     const result1 = useReadContract({
         abi:abi,
         address: '0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7',
-        functionName: 'invoices',
-        account: account.address,
-        args: ['0x46A74e56ed132ed0142508160119Cf105b21820a',1],
+        functionName: 'generateAllInvoice',
+        account: address,
+        args:[address]
       })
+    
+    const DateConverter=(timestamp)=>{
+        const date = new Date(Number(timestamp) * 1000)
+       return date.toLocaleString()
+    }
+   
 
     useEffect(() => {
+        console.log("rjkkjkr",result1);
+        if (isSuccess) {
+            setInvoices(result);
+            console.log("helloworld",result);
+            console.log(invoices);
+        }else{
+            <p>Loading...</p>
+        }
+        if (error){
 
-        console.log("helloworld",result.data);
-        console.log("hello",result1.data);
-    },[result.data])
+            console.log(error.message);
+        }
+           
+    },[result])
 
 	// const handleConfirmDelivery = (index) => {
 	// 	console.log(`Delivery confirmed for ${invoices[index].title}`);
@@ -75,18 +114,18 @@ const Invoices = ({
                     </p>
                     <div className=' grid grid-flow-col gap-8 item-center'>
                     <p className='flex flex-col text-gray-600 text-sm'>
-                    <strong className='text-base text-gray-900'>Amount:</strong> {invoice.amount} {invoice.currency}
+                    <strong className='text-base text-gray-900'>Amount:</strong> $ {formatEther(invoice.amount)}
                     </p>
                     <p className='flex flex-col text-gray-600 text-sm'>
-                    <strong className='text-base text-gray-900'>Due Date:</strong> {new Date(invoice.dueDate).toLocaleDateString()}
+                    <strong className='text-base text-gray-900'>Due Date:</strong> {DateConverter(invoice.deadline)}
                     </p>
                     </div>
                     
                     <p className='flex flex-col text-gray-600 text-sm'>
-                    <strong className='text-base text-gray-900'>Payment Terms:</strong> {invoice.paymentTerms}
+                    <strong className='text-base text-gray-900'>Payment Terms:</strong> {invoice.paymentterm}
                     </p>
                     <p className='flex flex-col text-gray-600 text-sm'>
-                    <strong className='text-base text-gray-900'>Additional Conditions:</strong> {invoice.additionalConditions}
+                    <strong className='text-base text-gray-900'>Additional Conditions:</strong> {invoice.termsAndConditions}
                     </p>
                 {/* <span
                     className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${contract.statusColor}`}
@@ -118,7 +157,8 @@ const Invoices = ({
                         </button>
                     ) : (
                         <>
-                            <div className="flex justify-between w-full">
+                            {address === invoice.clientAddress ?
+                                <div className="flex justify-between w-full">
                                 <button
                                     className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
                                     onClick={() => handleAccept(index)}
@@ -128,7 +168,14 @@ const Invoices = ({
                                 <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
                                     Reject
                                 </button>
-                            </div>
+                            </div> : 
+                             <button
+                             className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                             onClick={() => handleMilestone(index)}
+                         >
+                             Add milestone
+                         </button>
+                            }
                         </>
                     )}
                 </div>
@@ -136,43 +183,12 @@ const Invoices = ({
         ))}
 
         {isModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                    <h2 className="text-xl font-semibold mb-4">
-                        Deposit Funds
-                    </h2>
-                    <form onSubmit={handleDeposit}>
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Deposit Amount
-                            </label>
-                            <input
-                                type="number"
-                                className="w-full outline-none border border-gray-300 rounded px-3 py-2"
-                                value={depositAmount}
-                                onChange={(e) => setDepositAmount(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="flex justify-end space-x-4">
-                            <button
-                                type="button"
-                                className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
-                                onClick={handleCloseModal}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                            >
-                                Deposit
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+          <DepositModal handleCloseModal={handleCloseModal} handleDeposit={handleDeposit} setDepositAmount={setDepositAmount}  depositAmount={depositAmount}  />
         )}
+
+        {isMileModalOpen && 
+        <AddMilestoneModal invoices={invoices} selectedInvoiceIndex={selectedInvoiceIndex} onAddMilestone={handleAddMilestone} handleMileCloseModal={handleMileCloseModal}/>
+        }
     </div>
 </>
     );
