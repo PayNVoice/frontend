@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import invoicesarray from "./details";
 import * as Tabs from "@radix-ui/react-tabs";
@@ -12,6 +12,9 @@ const Invoices = ({
     const [selectedInvoiceIndex, setSelectedInvoiceIndex] = useState(null);
 	const [invoices, setInvoices] = useState(invoicesarray);
     const [depositAmount, setDepositAmount] = useState("");
+
+  
+   
 
     const handleAccept = (index) => {
 		setSelectedInvoiceIndex(index);
@@ -32,17 +35,32 @@ const Invoices = ({
 	};
 
     const account = useAccount();
+
+    //getting all the contractss
     
+    const {data:invoiceList,isLoading,error} = useReadContract({
+        abi:abi,
+        address: '0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7',
+        functionName: 'generateAllInvoice',
+        account: account.address,
+        
+      })
+      console.log("result::",invoiceList)
 
-    const result = useReadContract({
-      abi:abi,
-      address: '0x58BA61c7Ba4923615c4c942D5164d8Cfa87df37C',
-      functionName: 'getInvoice',
-      account: account.address,
-      args: [0],
-    })
 
-    console.log("hello",result.data);
+    //   i think in the code below, to get the invoice list, we need to pass the index as an argument,
+    //   maybe index+1
+
+    // const result = useReadContract({
+    //   abi:abi,
+    //   address: '0x58BA61c7Ba4923615c4c942D5164d8Cfa87df37C',
+    //   functionName: 'getInvoice',
+    //   account: account.address,
+    //   args: [0],
+    // })
+
+    // console.log("hello",result.data);
+
 
 	// const handleConfirmDelivery = (index) => {
 	// 	console.log(`Delivery confirmed for ${invoices[index].title}`);
