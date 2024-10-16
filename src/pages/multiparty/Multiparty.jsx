@@ -1,124 +1,138 @@
 import initialContracts from "./InvoiceList";
 import * as Tabs from "@radix-ui/react-tabs";
-import { useState,useEffect } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useReadContract } from 'wagmi'
-import abi from '../../config/abi'
-import { useAccount } from 'wagmi';	
+import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useReadContract } from "wagmi";
+import abi from "../../config/abi";
+import { useAccount } from "wagmi";
 import { formatEther } from "viem";
+import { isEmpty } from "lodash";
+import Spinner from "../../components/spinner/Spinner";
 
 const Multiparty = () => {
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [selectedContractIndex, setSelectedContractIndex] = useState(null);
-	const [contracts, setContracts] = useState(initialContracts);
-	const [depositAmount, setDepositAmount] = useState("");
-	const [invoiceList,setInvoiceList] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedContractIndex, setSelectedContractIndex] = useState(null);
+  const [contracts, setContracts] = useState(initialContracts);
+  const [depositAmount, setDepositAmount] = useState("");
+  const [invoiceList, setInvoiceList] = useState([]);
 
-	const handleAccept = (index) => {
-		setSelectedContractIndex(index);
-		setIsModalOpen(true);
-	};
+  const handleAccept = (index) => {
+    setSelectedContractIndex(index);
+    setIsModalOpen(true);
+  };
 
-	const handleCloseModal = () => {
-		setIsModalOpen(false);
-		setDepositAmount("");
-	};
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setDepositAmount("");
+  };
 
-	const handleDeposit = (e) => {
-		e.preventDefault();
-		const updatedContracts = [...contracts];
-		updatedContracts[selectedContractIndex].isDepositMade = true; // Mark deposit as made
-		setContracts(updatedContracts);
-		handleCloseModal();
-	};
+  const handleDeposit = (e) => {
+    e.preventDefault();
+    const updatedContracts = [...contracts];
+    updatedContracts[selectedContractIndex].isDepositMade = true; // Mark deposit as made
+    setContracts(updatedContracts);
+    handleCloseModal();
+  };
 
-	const handleConfirmDelivery = (index) => {
-		console.log(`Delivery confirmed for ${contracts[index].title}`);
-		// Add logic to interact with the smart contract to finalize the process
-	};
+  const handleConfirmDelivery = (index) => {
+    console.log(`Delivery confirmed for ${contracts[index].title}`);
+    // Add logic to interact with the smart contract to finalize the process
+  };
 
+  const contractAddress = "0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7";
+  const account = useAccount();
 
-	const contractAddress = '0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7';
-	const account = useAccount();
+  const {
+    data: asyncInvoiceList,
+    isLoading,
+    error,
+    isSuccess,
+  } = useReadContract({
+    abi: abi,
+    address: contractAddress,
+    functionName: "generateAllInvoice",
+    account: account.address,
+  });
+  console.log("asyncInvoiceList::", asyncInvoiceList);
 
-	const {data:asyncInvoiceList,isLoading,error,isSuccess} = useReadContract({
-        abi:abi,
-        address: contractAddress,
-        functionName: 'generateAllInvoice',
-        account: account.address,
-        
-      })
-	  console.log("asyncInvoiceList::",asyncInvoiceList)	
+  useEffect(() => {
+    if (isSuccess) {
+      setInvoiceList(asyncInvoiceList);
+      console.log("result-multi-party::", invoiceList);
+    }
+  }, [asyncInvoiceList]);
 
+  //   the tabs are mixed up, created invoices are the one showing the accept and reject button, when those buttons are for the invoices created for you
 
-	  useEffect(()=>{
-		if(isSuccess){
-			setInvoiceList(asyncInvoiceList)
-			console.log("result-multi-party::",invoiceList)
-		}
-     
-	  },[asyncInvoiceList])
+  if (isLoading) {
+    return <Spinner />;
+  }
+  return (
+    <>
+      <Tabs.Root defaultValue="tab1" className="py-14 " orientation="vertical">
+        <Tabs.List
+          aria-label="tabs"
+          className="font-semibold bg-gradient-to-r to-[#568ce2] from-[#1f3a63] p-4 mb-7 text-gray-800 flex gap-4"
+        >
+          <Tabs.Trigger
+            className="TabsTrigger shadow-lg rounded-md text-base"
+            value="tab1"
+          >
+            Created Invoice{" "}
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className="TabsTrigger shadow-lg rounded-md text-base"
+            value="tab2"
+          >
+            Invoice Created For You
+          </Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="tab1">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {isEmpty(invoiceList) ? (
+              <div className="w-full text-center col-span-3 p-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  No Invoices Found
+                </h3>
+                <p className="text-sm text-gray-500">
+                  There are no invoices to display at the moment.
+                </p>
+              </div>
+            ) : (
+              invoiceList.map((invoice, index) => (
+                <div
+                  key={index}
+                  className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
+                >
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">{`Invoice Title`}</h3>
+                  <p className="text-sm overflow-hidden text-ellipsis text-gray-500">
+                    Parties{invoice.clientAddress}
+                  </p>
+                  <p className="text-sm text-gray-500 mb-4">
+                    Total Value: {formatEther(invoice.amount)} USDT
+                  </p>
+                  <p className="text-sm text-gray-500 mb-4">
+                    {invoice.deadline}
+                    {/* convert this to a readable date from utils */}
+                  </p>
+                  <span
+                    className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${
+                      invoice.hasAccepted
+                        ? "bg-green-100 text-green-700"
+                        : "bg-yellow-100 text-yellow-700"
+                    }`}
+                  >
+                    {invoice.hasAccepted ? "In Progress" : "Pending"}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
+        </Tabs.Content>
 
-
-	//   the tabs are mixed up, created invoices are the one showing the accept and reject button, when those buttons are for the invoices created for you
-
-
-	return (
-		<>
-			<Tabs.Root defaultValue="tab1" className="py-14 " orientation="vertical">
-				<Tabs.List
-					aria-label="tabs"
-					className="font-semibold bg-gradient-to-r to-[#568ce2] from-[#1f3a63] p-4 mb-7 text-gray-800 flex gap-4"
-				>
-					<Tabs.Trigger
-						className="TabsTrigger shadow-lg rounded-md text-base"
-						value="tab1"
-					>
-						Created Invoice{" "}
-					</Tabs.Trigger>
-					<Tabs.Trigger
-						className="TabsTrigger shadow-lg rounded-md text-base"
-						value="tab2"
-					>
-						Invoice Created For You
-					</Tabs.Trigger>
-				</Tabs.List>
-				<Tabs.Content value="tab1">
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						{invoiceList.map((invoice, index) => (
-							<div
-								key={index}
-								className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
-							>
-								<h3 className="text-lg font-semibold text-gray-800 mb-2">
-									{`Invoice Title`}
-								</h3>
-								<p className="text-sm overflow-hidden text-ellipsis text-gray-500">
-								Parties{invoice.clientAddress} 
-								</p>
-								<p className="text-sm text-gray-500 mb-4">
-									Total Value: {formatEther(invoice.amount)}USDT
-								</p>
-								<p
-									className="text-sm text-gray-500 mb-4"
-								>
-									{invoice.deadline} 
-									{/* convert this to a readable date from utils */}
-								</p>
-								<span
-									className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${invoice.hasAccepted ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}
-								>
-									{invoice.hasAccepted ? "In Progress" : "Pending"}
-								</span>
-							</div>
-						))}
-					</div>
-				
-				</Tabs.Content>
-				<Tabs.Content value="tab2">
-
-					{/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Tabs.Content value="tab2">
+          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 						{contracts.map((contract, index) => (
 							<div
 								key={index}
@@ -205,10 +219,10 @@ const Multiparty = () => {
 							</div>
 						)}
 					</div> */}
-				</Tabs.Content>
-			</Tabs.Root>
-		</>
-	);
+        </Tabs.Content>
+      </Tabs.Root>
+    </>
+  );
 };
 
 export default Multiparty;
