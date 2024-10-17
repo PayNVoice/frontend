@@ -508,13 +508,7 @@ const abi =
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "client",
-                "type": "address"
-            }
-        ],
+        "inputs": [],
         "name": "getInvoicesForClient",
         "outputs": [
             {
