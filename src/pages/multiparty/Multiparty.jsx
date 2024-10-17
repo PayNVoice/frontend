@@ -44,8 +44,9 @@ const Multiparty = () => {
 	const {data:asyncInvoiceList,isLoading,error,isSuccess} = useReadContract({
         abi:abi,
         address: contractAddress,
-        functionName: 'generateAllInvoice',
+        functionName: 'getInvoicesForClient',
         account: account.address,
+		args:['0xdBc96CdfAD60ee1B0B430A9f58EffC4765d0BEA3']
         
       })
 	  console.log("asyncInvoiceList::",asyncInvoiceList)	
@@ -87,7 +88,7 @@ const Multiparty = () => {
 								className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
 							>
 								<h3 className="text-lg font-semibold text-gray-800 mb-2">
-									{`Invoice Title`}
+									{invoice.title}
 								</h3>
 								<p className="text-sm overflow-hidden text-ellipsis text-gray-500">
 								Parties{invoice.clientAddress} 
