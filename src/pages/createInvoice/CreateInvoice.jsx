@@ -65,7 +65,7 @@ const CreateInvoice = () => {
   useEffect(() => {
     if (isConfirmed) {
       toast.success("Invoice Created Successfully");
-      navigate("/invoice/invoices");
+      // navigate("/invoice/invoices");
     }
   }, [isConfirmed]);
 
