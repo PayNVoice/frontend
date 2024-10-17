@@ -1,4 +1,5 @@
-const abi =[
+const abi = 
+[
     {
         "inputs": [
             {
@@ -93,25 +94,6 @@ const abi =[
             }
         ],
         "name": "InvoiceCreatedSuccessfully",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "forwho",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "invoiceId",
-                "type": "uint256"
-            }
-        ],
-        "name": "InvoiceReturnedSuccessfully",
         "type": "event"
     },
     {
@@ -518,11 +500,11 @@ const abi =[
                     }
                 ],
                 "internalType": "struct PayNVoice.Invoice",
-                "name": "invoice1_",
+                "name": "",
                 "type": "tuple"
             }
         ],
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function"
     },
     {
