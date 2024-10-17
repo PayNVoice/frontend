@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const abi = [
+=======
+[
+>>>>>>> 1c296d26175f3f99f4a6705364b81d7ee6997bb2
     {
         "inputs": [
             {
@@ -794,5 +798,3 @@ const abi = [
         "type": "function"
     }
 ]
-
-  export default abi;
