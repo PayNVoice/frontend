@@ -1,11 +1,11 @@
 import initialContracts from "./InvoiceList";
 import * as Tabs from "@radix-ui/react-tabs";
-import { useState,useEffect } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useReadContract } from 'wagmi'
-import abi from '../../config/abi'
-import { useAccount } from 'wagmi';	
+import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useReadContract } from "wagmi";
+import abi from "../../config/abi";
+import { useAccount } from "wagmi";
 import { formatEther } from "viem";
 import { contractAddress } from "../../config/contractAddress";
 
@@ -14,7 +14,7 @@ const Multiparty = () => {
 	const [selectedContractIndex, setSelectedContractIndex] = useState(null);
 	const [contracts, setContracts] = useState(initialContracts);
 	const [depositAmount, setDepositAmount] = useState("");
-	const [invoiceList,setInvoiceList] = useState([]);
+	const [invoiceList, setInvoiceList] = useState([]);
 	const account = useAccount();
 
 	const handleAccept = (index) => {
@@ -34,30 +34,34 @@ const Multiparty = () => {
 		setContracts(updatedContracts);
 		handleCloseModal();
 	};
+	const DateConverter = (timestamp) => {
+		const date = new Date(Number(timestamp) * 1000);
+		return date.toLocaleString();
+	};
 
 	const handleConfirmDelivery = (index) => {
 		console.log(`Delivery confirmed for ${contracts[index].title}`);
 		// Add logic to interact with the smart contract to finalize the process
 	};
 
+	const {
+		data: asyncInvoiceList,
+		isLoading,
+		error,
+		isSuccess,
+	} = useReadContract({
+		abi: abi,
+		address: contractAddress,
+		functionName: "getInvoicesForClient",
+		account: account.address,
+		args: ["0x46A74e56ed132ed0142508160119Cf105b21820a"],
+	});
 
-	const {data:asyncInvoiceList,isLoading,error,isSuccess} = useReadContract({
-        abi:abi,
-        address: contractAddress,
-        functionName: 'generateAllInvoice',
-        account: account.address,
-        
-      })
-	  console.log("asyncInvoiceList::",asyncInvoiceList)	
-
-
-	  useEffect(()=>{
-		if(isSuccess){
-			setInvoiceList(asyncInvoiceList)
-			console.log("result-multi-party::",invoiceList)
+	useEffect(() => {
+		if (isSuccess) {
+			setInvoiceList(asyncInvoiceList);
 		}
-     
-	  },[asyncInvoiceList])
+	}, [asyncInvoiceList]);
 
 	return (
 		<>
@@ -80,39 +84,45 @@ const Multiparty = () => {
 					</Tabs.Trigger>
 				</Tabs.List>
 				<Tabs.Content value="tab1">
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						{invoiceList.map((invoice, index) => (
-							<div
-								key={index}
-								className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
-							>
-								<h3 className="text-lg font-semibold text-gray-800 mb-2">
-									{`Invoice Title`}
-								</h3>
-								<p className="text-sm overflow-hidden text-ellipsis text-gray-500">
-								Parties{invoice.clientAddress} 
-								</p>
-								<p className="text-sm text-gray-500 mb-4">
-									Total Value: {formatEther(invoice.amount)}USDT
-								</p>
-								<p
-									className="text-sm text-gray-500 mb-4"
+					{isLoading ? (
+						<div className="flex justify-center w-full m-auto items-center h-full">
+							<div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+						</div>
+					) : (
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+							{invoiceList.map((invoice, index) => (
+								<div
+									key={index}
+									className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
 								>
-									{invoice.deadline} 
-									{/* convert this to a readable date from utils */}
-								</p>
-								<span
-									className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${invoice.hasAccepted ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}
-								>
-									{invoice.hasAccepted ? "In Progress" : "Pending"}
-								</span>
-							</div>
-						))}
-					</div>
-				
+									<h3 className="text-lg font-semibold text-gray-800 mb-2">
+										{invoice.title}
+									</h3>
+									<p className="text-sm overflow-hidden text-ellipsis text-gray-500">
+										Parties: {invoice.clientAddress}
+									</p>
+									<p className="text-sm text-gray-500 mb-4">
+										Total Value: {formatEther(invoice.amount)}USDT
+									</p>
+									<p className="text-sm text-gray-500 mb-4">
+										{DateConverter(invoice.deadline)}
+										{/* convert this to a readable date from utils */}
+									</p>
+									<span
+										className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${
+											invoice.hasAccepted
+												? "bg-green-100 text-green-700"
+												: "bg-yellow-100 text-yellow-700"
+										}`}
+									>
+										{invoice.hasAccepted ? "In Progress" : "Pending"}
+									</span>
+								</div>
+							))}
+						</div>
+					)}
 				</Tabs.Content>
 				<Tabs.Content value="tab2">
-
 					{/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 						{contracts.map((contract, index) => (
 							<div
