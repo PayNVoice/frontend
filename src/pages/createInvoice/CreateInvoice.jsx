@@ -5,6 +5,7 @@ import { useWriteContract,useWaitForTransactionReceipt } from "wagmi";
 import { ToastContainer, toast } from "react-toastify";
 import { parseEther } from "viem";
 import abi from "../../config/abi"
+import { contractAddress } from "../../config/contractAddress";
 
 
 
@@ -14,6 +15,7 @@ const CreateInvoice = () => {
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
   const [paymentTerm, setPaymentTerm] = useState('');
+  const [title, setTitle] = useState('');
   const [additionalConditions, setAdditionalConditions] = useState('');
   const [currency, setCurrency] = useState('');
   const [txHash, setTxHash] = useState(null);
@@ -23,10 +25,6 @@ const CreateInvoice = () => {
 
   const account = useAccount();
   const navigate = useNavigate();
-
-
-  const contractAddress = "0x0F0AFE3d86B1C3f93C62C39B0dA5CE2d109BfBE7";
-
 
   const handleCreateInvoice = async () => {
     try {
@@ -44,8 +42,9 @@ const CreateInvoice = () => {
           customerAddress,
           amountInWei,
           dueDateTimestamp,
+          additionalConditions,
           paymentTerm,
-          additionalConditions      
+          title   
         ]
       });
 
@@ -79,14 +78,32 @@ const CreateInvoice = () => {
           <div className="w-full md:w-[700px] flex flex-col gap-5">
             <div className="">
               <label
-                htmlFor="email"
+                htmlFor="title"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Title
+              </label>
+              <input
+                type="text"
+                id="title"
+                className="bg-gray-50 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                placeholder="Title"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}  
+              />
+            </div>
+
+            <div className="">
+              <label
+                htmlFor="address"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Client Wallet Address
               </label>
               <input
-                type="email"
-                id="email"
+                type="text"
+                id="address"
                 className="bg-gray-50 outline-none border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="0x000000000...."
                 required
