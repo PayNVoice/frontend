@@ -8,6 +8,7 @@ import abi from "../../config/abi";
 import { useAccount } from "wagmi";
 import { formatEther } from "viem";
 import { contractAddress } from "../../config/contractAddress";
+import { useContract } from "../../context/contractContext";
 
 const Multiparty = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,6 +17,8 @@ const Multiparty = () => {
 	const [depositAmount, setDepositAmount] = useState("");
 	const [invoiceList,setInvoiceList] = useState([]);
 	const account = useAccount();
+	const {useGenerateAllInvoice} = useContract();
+	const {asyncInvoiceList,isLoading,error,isSuccess} = useGenerateAllInvoice();
 
 	const handleAccept = (index) => {
 		setSelectedContractIndex(index);
@@ -41,23 +44,27 @@ const Multiparty = () => {
 	};
 
 
-	const {data:asyncInvoiceList,isLoading,error,isSuccess} = useReadContract({
+	//using the contextAPI here
+	useEffect(() => {
+		if (isSuccess) {
+		  setInvoiceList(asyncInvoiceList);
+		  console.log("result-multi-party::", invoiceList);
+		}
+	}, [asyncInvoiceList, isSuccess]);
+
+
+	  //get invoices created for you: this is just a dummy using the other function
+	  //once the contract function works , you can put this in the contexxt api
+	  const {data:asyncClientInvoiceList,isClientLoading,clientEerror,isClientSuccess} = useReadContract({
         abi:abi,
         address: contractAddress,
         functionName: 'generateAllInvoice',
-        account: account.address,
-        
+        account: account.address,    
       })
-	  console.log("asyncInvoiceList::",asyncInvoiceList)	
+	  console.log("asyncClientInvoiceList::",asyncClientInvoiceList);
 
 
-	  useEffect(()=>{
-		if(isSuccess){
-			setInvoiceList(asyncInvoiceList)
-			console.log("result-multi-party::",invoiceList)
-		}
-     
-	  },[asyncInvoiceList])
+
 
 	return (
 		<>
@@ -87,7 +94,7 @@ const Multiparty = () => {
 								className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
 							>
 								<h3 className="text-lg font-semibold text-gray-800 mb-2">
-									{`Invoice Title`}
+									{invoice.title}
 								</h3>
 								<p className="text-sm overflow-hidden text-ellipsis text-gray-500">
 								Parties{invoice.clientAddress} 
@@ -113,29 +120,30 @@ const Multiparty = () => {
 				</Tabs.Content>
 				<Tabs.Content value="tab2">
 
-					{/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-						{contracts.map((contract, index) => (
+						{asyncClientInvoiceList.map((invoice, index) => (
 							<div
 								key={index}
 								className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
 							>
 								<h3 className="text-lg font-semibold text-gray-800 mb-2">
-									{contract.title}
+									{invoice.title}
 								</h3>
-								<p className="text-sm text-gray-500">
-									{contract.parties} Parties
+								<p className="text-sm overflow-hidden text-ellipsis text-gray-500">
+									{invoice.clientAddress} Parties
 								</p>
 								<p className="text-sm text-gray-500 mb-4">
-									Total Value: {contract.totalValue}
+									Total Value: {formatEther(invoice.amount)}USDT
 								</p>
 								<span
-									className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${contract.statusColor}`}
+									className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${invoice.hasAccepted ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}
 								>
-									{contract.status}
+									{invoice.hasAccepted ? "In Progress" : "Pending"}
 								</span>
+								{/* you will need this later when you are fetching from the proper function */}
 
-								<div className="mt-4 flex space-x-4">
+								{/* <div className="mt-4 flex space-x-4">
 									{contract.isDepositMade ? (
 										<button
 											className="bg-[#1f3a63] hover:bg-blue-600 text-white px-4 py-2 rounded"
@@ -158,7 +166,7 @@ const Multiparty = () => {
 											</div>
 										</>
 									)}
-								</div>
+								</div> */}
 							</div>
 						))}
 
@@ -200,7 +208,7 @@ const Multiparty = () => {
 								</div>
 							</div>
 						)}
-					</div> */}
+					</div>
         </Tabs.Content>
       </Tabs.Root>
     </>
