@@ -19,10 +19,10 @@ const Multiparty = () => {
   const [contracts, setContracts] = useState(initialContracts);
   const [depositAmount, setDepositAmount] = useState("");
   const [invoiceList, setInvoiceList] = useState([]);
+  const [clientInvoiceList, setClientInvoiceList] = useState([]);
   const account = useAccount();
   const { useGenerateAllInvoice } = useContract();
-  const { asyncInvoiceList, isLoading, error, isSuccess } =
-    useGenerateAllInvoice();
+
 
   const handleAccept = (index) => {
     setSelectedContractIndex(index);
@@ -52,24 +52,41 @@ const Multiparty = () => {
     // Add logic to interact with the smart contract to finalize the process
   };
 
-  const {
-    data: asyncClientInvoiceList,
-    isClientLoading,
-    clientEerror,
-    isClientSuccess,
-  } = useReadContract({
+  const { data: asyncInvoiceList, isLoading, error, isSuccess } = useReadContract({
     abi: abi,
     address: contractAddress,
-    functionName: "generateAllInvoice",
+    functionName: 'generateAllInvoice',
     account: account.address,
   });
 
   useEffect(() => {
     if (isSuccess) {
-      setInvoiceList(asyncClientInvoiceList);
-      console.log("result-multi-party::", asyncClientInvoiceList);
+      setInvoiceList(asyncInvoiceList);
+      console.log("result-multi-party::", asyncInvoiceList);
     }
   }, [asyncInvoiceList, isSuccess]);
+  //generateAllInvoice
+
+
+  const {
+    data: asyncClientInvoiceList,
+    isLoading:isClientLoading,
+    clientEerror,
+    isSuccess: isClientSuccess,
+  } = useReadContract({
+    abi: abi,
+    address: contractAddress,
+    functionName: "getclientInvoices",
+    account: account.address,
+  });
+
+  useEffect(() => {
+    if (isClientSuccess) {
+      setClientInvoiceList(asyncClientInvoiceList);
+      console.log("result-multi-party::", asyncClientInvoiceList);
+    }
+  }, [asyncClientInvoiceList, isClientSuccess]);
+
 
   return (
     <>
@@ -136,13 +153,13 @@ const Multiparty = () => {
         <Tabs.Content value="tab2">
           {isClientLoading ? (
             <Spinner />
-          ) : isEmpty(asyncClientInvoiceList) ? ( 
+          ) : isEmpty(clientInvoiceList) ? ( 
             <div className="col-span-12 text-center text-gray-600 flex items-center justify-center">
               <img src={empty_state} alt="EMPTY STATE" />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {asyncClientInvoiceList?.map((invoice, index) => (
+              {clientInvoiceList?.map((invoice, index) => (
                 <div
                   key={index}
                   className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
