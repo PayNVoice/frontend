@@ -94,13 +94,13 @@ const Multiparty = () => {
           className="font-semibold bg-gradient-to-r to-[#568ce2] from-[#1f3a63] p-4 mb-7 text-gray-800 flex gap-4"
         >
           <Tabs.Trigger
-            className="TabsTrigger shadow-lg rounded-md text-base"
+            className="TabsTrigger shadow-lg rounded-md  md:text-base text-sm "
             value="tab1"
           >
             Created Invoice{" "}
           </Tabs.Trigger>
           <Tabs.Trigger
-            className="TabsTrigger shadow-lg rounded-md text-base"
+            className="TabsTrigger shadow-lg rounded-md md:text-base text-sm "
             value="tab2"
           >
             Invoice Created For You
