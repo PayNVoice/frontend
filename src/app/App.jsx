@@ -21,7 +21,7 @@ function App() {
     <div> 
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider>
+          <RainbowKitProvider modalSize="compact">
             <ContractProvider>
               <Router />
               <ToastContainer />

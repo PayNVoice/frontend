@@ -1,4 +1,3 @@
-import initialContracts from "./InvoiceList";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,7 +15,6 @@ import empty_state from "../../assets/images/empty_state.png";
 const Multiparty = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedContractIndex, setSelectedContractIndex] = useState(null);
-  const [contracts, setContracts] = useState(initialContracts);
   const [depositAmount, setDepositAmount] = useState("");
   const [invoiceList, setInvoiceList] = useState([]);
   const [clientInvoiceList, setClientInvoiceList] = useState([]);
