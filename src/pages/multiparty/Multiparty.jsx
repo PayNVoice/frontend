@@ -52,7 +52,7 @@ const Multiparty = () => {
 	  const {data:asyncClientInvoiceList,isClientLoading,clientEerror,isClientSuccess} = useReadContract({
         abi:abi,
         address: contractAddress,
-        functionName: 'generateAllInvoice',
+        functionName: 'getclientInvoices',
         account: account.address,    
       })
 	  //using the contextAPI here
