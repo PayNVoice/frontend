@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import abi from "../../config/abi";
 import { contractAddress } from "../../config/contractAddress";
 import { useReadContract,useAccount } from "wagmi";
-import { formatGwei } from "viem";
+import { formatEther, formatGwei } from "viem";
 
 
 const TransactionHistory = () => {
@@ -88,7 +88,7 @@ const TransactionHistory = () => {
 						  <td className="border px-4 py-2">tnx-#{milestoneIndex}</td>
 						  <th className="border px-4 py-2">{milestone.description}</th>
 						  <td className="border px-4 py-2">{(new Date(Number(milestone.deadline) * 1000)).toLocaleDateString()}</td>
-						  <td className="border px-4 py-2">{formatGwei(milestone.amount, 18)} eth</td>
+						  <td className="border px-4 py-2">{formatEther(milestone.amount)} eth</td>
 						  <td className="border px-4 py-2">{milestoneStatus[milestone.status] || "unknown"}</td>
 						</tr>
 						))
