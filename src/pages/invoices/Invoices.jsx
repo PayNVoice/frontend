@@ -95,7 +95,7 @@ const Invoices = () => {
 			{isLoading ? (
 				<Spinner />
 			) : (
-				<div className="grid grid-cols-12 md:grid-cols-4 mt-5 gap-10">
+				<div className="grid grid-rows-1 md:grid-cols-4 mt-5 gap-10">
 					{isEmpty(invoices) ? ( // check if invoices is empty
 						<div className="col-span-12 text-center text-gray-600 flex items-center justify-center">
 							<img src={empty_state} alt="EMPTY STATE" />
@@ -188,7 +188,7 @@ const Invoices = () => {
 										</button>
 									) : (
 										<>
-											{address === invoice ?(
+											{address === invoice.clientAddress ?(
 												<div className="flex justify-between w-full">
 													<button
 														className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
