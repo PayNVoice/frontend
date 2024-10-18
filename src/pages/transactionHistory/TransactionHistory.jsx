@@ -25,6 +25,41 @@ const TransactionHistory = () => {
 		account: account.address,
 	  });
 
+  const convertMilestonesToCSV = () => {
+    let csvContent = "Description,Amount,Deadline,Is Paid,Status\n"; // CSV headers
+
+		invoiceHistory.forEach((invoice) => {
+		invoice.milestones.forEach((milestone) => {
+			const row = [
+			milestone.description,
+			`${formatEther(milestone.amount)} eth`, // Assuming amount is in Gwei or similar unit
+			new Date(Number(milestone.deadline) * 1000).toLocaleDateString(), // Convert timestamp to date
+			milestone.isPaid ? "Yes" : "No",
+			milestone.status === 0 ? "Pending" : "Completed",
+			];
+
+			csvContent += row.join(",") + "\n"; // Join each row with commas and create a new line
+		});
+		});
+
+		return csvContent;
+	};
+
+	const downloadCSV = () => {
+		const csvContent = convertMilestonesToCSV();
+
+		const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+
+		const link = document.createElement("a");
+		const url = URL.createObjectURL(blob);
+		link.href = url;
+		link.setAttribute("download", "milestones.csv");
+
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	};
+
 	useEffect(() =>{
 		if(isSuccess){
 			setHistory(invoiceHistory)
@@ -96,7 +131,7 @@ const TransactionHistory = () => {
 			</table>
 
 			<div className='history-buttom flex justify-between bottom-9'>
-          <button className='flex bg-gradient-to-r to-[#568ce2] from-[#1f3a63] text-white rounded-md p-2 mt-4' type="button">
+          <button className='flex bg-gradient-to-r to-[#568ce2] from-[#1f3a63] text-white rounded-md p-2 mt-4' onClick={downloadCSV} type="button">
                    Download transaction history
           </button>
       </div>
