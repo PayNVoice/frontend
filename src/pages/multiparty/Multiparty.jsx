@@ -15,7 +15,7 @@ const Multiparty = () => {
 	const [selectedContractIndex, setSelectedContractIndex] = useState(null);
 	const [contracts, setContracts] = useState(initialContracts);
 	const [depositAmount, setDepositAmount] = useState("");
-	const [invoiceList,setInvoiceList] = useState([]);
+	const [invoiceList, setInvoiceList] = useState([]);
 	const account = useAccount();
 	const {useGenerateAllInvoice} = useContract();
 	const {asyncInvoiceList,isLoading,error,isSuccess} = useGenerateAllInvoice();
@@ -37,21 +37,15 @@ const Multiparty = () => {
 		setContracts(updatedContracts);
 		handleCloseModal();
 	};
+	const DateConverter = (timestamp) => {
+		const date = new Date(Number(timestamp) * 1000);
+		return date.toLocaleString();
+	};
 
 	const handleConfirmDelivery = (index) => {
 		console.log(`Delivery confirmed for ${contracts[index].title}`);
 		// Add logic to interact with the smart contract to finalize the process
 	};
-
-
-	//using the contextAPI here
-	useEffect(() => {
-		if (isSuccess) {
-		  setInvoiceList(asyncInvoiceList);
-		  console.log("result-multi-party::", invoiceList);
-		}
-	}, [asyncInvoiceList, isSuccess]);
-
 
 	  //get invoices created for you: this is just a dummy using the other function
 	  //once the contract function works , you can put this in the contexxt api
@@ -61,7 +55,14 @@ const Multiparty = () => {
         functionName: 'generateAllInvoice',
         account: account.address,    
       })
-	  console.log("asyncClientInvoiceList::",asyncClientInvoiceList);
+	  //using the contextAPI here
+	useEffect(() => {
+		if (isSuccess) {
+		  setInvoiceList(asyncClientInvoiceList);
+		  console.log("result-multi-party::", asyncClientInvoiceList);
+		}
+	}, [asyncInvoiceList, isSuccess]);
+
 
 
 
@@ -87,36 +88,43 @@ const Multiparty = () => {
 					</Tabs.Trigger>
 				</Tabs.List>
 				<Tabs.Content value="tab1">
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						{invoiceList.map((invoice, index) => (
-							<div
-								key={index}
-								className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
-							>
-								<h3 className="text-lg font-semibold text-gray-800 mb-2">
-									{invoice.title}
-								</h3>
-								<p className="text-sm overflow-hidden text-ellipsis text-gray-500">
-								Parties{invoice.clientAddress} 
-								</p>
-								<p className="text-sm text-gray-500 mb-4">
-									Total Value: {formatEther(invoice.amount)}USDT
-								</p>
-								<p
-									className="text-sm text-gray-500 mb-4"
+					{isLoading ? (
+						<div className="flex justify-center w-full m-auto items-center h-full">
+							<div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+						</div>
+					) : (
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+							{invoiceList.map((invoice, index) => (
+								<div
+									key={index}
+									className="bg-white border border-gray-200 rounded-lg p-6 shadow hover:shadow-lg transition-shadow duration-300"
 								>
-									{invoice.deadline} 
-									{/* convert this to a readable date from utils */}
-								</p>
-								<span
-									className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${invoice.hasAccepted ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}
-								>
-									{invoice.hasAccepted ? "In Progress" : "Pending"}
-								</span>
-							</div>
-						))}
-					</div>
-				
+									<h3 className="text-lg font-semibold text-gray-800 mb-2">
+										{invoice.title}
+									</h3>
+									<p className="text-sm overflow-hidden text-ellipsis text-gray-500">
+										Parties: {invoice.clientAddress}
+									</p>
+									<p className="text-sm text-gray-500 mb-4">
+										Total Value: {formatEther(invoice.amount)}USDT
+									</p>
+									<p className="text-sm text-gray-500 mb-4">
+										{DateConverter(invoice.deadline)}
+										{/* convert this to a readable date from utils */}
+									</p>
+									<span
+										className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${
+											invoice.hasAccepted
+												? "bg-green-100 text-green-700"
+												: "bg-yellow-100 text-yellow-700"
+										}`}
+									>
+										{invoice.hasAccepted ? "In Progress" : "Pending"}
+									</span>
+								</div>
+							))}
+						</div>
+					)}
 				</Tabs.Content>
 				<Tabs.Content value="tab2">
 
