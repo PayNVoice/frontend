@@ -6,7 +6,6 @@ import { formatEther, formatGwei } from "viem";
 
 
 const TransactionHistory = () => {
-	const [dateRange, setDateRange] = useState("");
 	const [status, setStatus] = useState("");
 	const [type, setType] = useState("");
 	const [history, setHistory] = useState([]);
@@ -27,7 +26,6 @@ const TransactionHistory = () => {
 	  });
 
 	useEffect(() =>{
-		const milestonesArray = [];
 		if(isSuccess){
 			setHistory(invoiceHistory)
 		}
