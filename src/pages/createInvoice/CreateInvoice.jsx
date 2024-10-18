@@ -44,19 +44,20 @@ const CreateInvoice = () => {
 				],
 			});
 
-			console.log("tx::", tx);
-			setTxHash(tx.hash);
+			setTxHash(tx);
 			toast.info("Transaction submitted. Waiting for confirmation...");
 
-			const { isSuccess: isConfirmed } =  useWaitForTransactionReceipt({
-				hash: tx.hash,
+    		const { isPending: isPending, isSuccess: isConfirmed } =  useWaitForTransactionReceipt({
+				hash: tx,
 			});
+
 			if (isConfirmed) {
 				toast.success("Invoice Created Successfully");
 				navigate("/invoice/invoices");
 			} else {
 				toast.error("Error creating invoice: Transaction failed");
 			}
+			
 		} catch (err) {
 			console.error("Error creating invoice:", err);
 			toast.error("Error creating invoice: " + err.message);

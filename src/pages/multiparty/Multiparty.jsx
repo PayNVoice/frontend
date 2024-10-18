@@ -1,4 +1,3 @@
-import initialContracts from "./InvoiceList";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,7 +12,6 @@ import { useContract } from "../../context/contractContext";
 const Multiparty = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedContractIndex, setSelectedContractIndex] = useState(null);
-	const [contracts, setContracts] = useState(initialContracts);
 	const [depositAmount, setDepositAmount] = useState("");
 	const [invoiceList, setInvoiceList] = useState([]);
 	const account = useAccount();
@@ -52,7 +50,7 @@ const Multiparty = () => {
 	  const {data:asyncClientInvoiceList,isClientLoading,clientEerror,isClientSuccess} = useReadContract({
         abi:abi,
         address: contractAddress,
-        functionName: 'generateAllInvoice',
+        functionName: 'getclientInvoices',
         account: account.address,    
       })
 	  //using the contextAPI here
@@ -147,7 +145,7 @@ const Multiparty = () => {
 								<span
 									className={`inline-block px-4 py-1 text-sm font-medium rounded-full ${invoice.hasAccepted ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}
 								>
-									{invoice.hasAccepted ? "In Progress" : "Pending"}
+									{invoice.hasAccepted ? "Accepted" : "Pending"}
 								</span>
 								{/* you will need this later when you are fetching from the proper function */}
 

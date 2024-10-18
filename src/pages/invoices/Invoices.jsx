@@ -15,7 +15,6 @@ const Invoices = () => {
 	const [invoices, setInvoices] = useState([]);
 	const [depositAmount, setDepositAmount] = useState("");
 	const { address } = useAccount();
-	const [milestones, setMilestones] = useState([]);
 	const { writeContractAsync } = useWriteContract();
 
 	const handleAccept = (index) => {
@@ -27,28 +26,22 @@ const Invoices = () => {
 		setSelectedInvoiceIndex(index);
 		setIsMileModalOpen(true);
 	};
-	const Mark = async (index) => {
-		await writeContractAsync({
-			abi: abi,
-			address: contractAddress,
-			functionName: "markMilestoneCompleted",
-			account: address,
-			args: [index],
-		});
-		toast.success("marked succesfull");
+
+	const Mark = async (invoiceIndex, milestoneIndex) => {
+		try {
+			await writeContractAsync({
+				abi: abi,
+				address: contractAddress,
+				functionName: "markMilestoneCompleted",
+				account: address,
+				args: [invoiceIndex, milestoneIndex],
+			});
+			toast.success("Milestone marked as completed successfully");
+		} catch (error) {
+			toast.error("Error marking milestone as completed");
+			console.error(error);
+		}
 	};
-
-	// const handleAddMilestone = (newMilestone) => {
-	//     const result1 = useReadContract({
-	//         abi:abi,
-	//         address: contractAddress,
-	//         functionName: 'getInvoicesForClient',
-	//         account: address,
-	//         args:['0x46A74e56ed132ed0142508160119Cf105b21820a']
-	//       })
-
-	//     setMilestones([...milestones, newMilestone]);
-	//   };
 
 	const handleCloseModal = () => {
 		setIsModalOpen(false);
@@ -57,14 +50,6 @@ const Invoices = () => {
 
 	const handleMileCloseModal = () => {
 		setIsMileModalOpen(false);
-	};
-
-	const handleDeposit = (e) => {
-		e.preventDefault();
-		const updatedContracts = [...contracts];
-		updatedContracts[selectedInvoiceIndex].isDepositMade = true; // Mark deposit as made
-		setInvoices(updatedContracts);
-		handleCloseModal();
 	};
 
 	const {
@@ -144,7 +129,7 @@ const Invoices = () => {
 							</h3>
 							{invoice.milestones.length > 0 ? (
 								<ul className="list-disc text-gray-600 text-sm ml-5">
-									{invoice.milestones.map((milestone, index) => (
+									{invoice.milestones.map((milestone, milestoneIndex) => (
 										<li
 											key={index}
 											className="flex space-y-2 justify-between items-center"
@@ -158,7 +143,7 @@ const Invoices = () => {
 											</div>
 											<button
 												disabled={milestone.status == 1}
-												onClick={() => Mark(index)}
+												onClick={() => Mark(index, milestoneIndex)}
 												className={`${
 													milestone.status == 1 ? "bg-blue-500" : "bg-blue-700"
 												} outline-none  font-roboto font-semibold text-white rounded-md p-2 capitalize boreder-none`}
