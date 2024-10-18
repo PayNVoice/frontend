@@ -75,9 +75,8 @@ const Invoices = () => {
 	} = useReadContract({
 		abi: abi,
 		address: contractAddress,
-		functionName: "getInvoicesForClient",
+		functionName: "generateAllInvoice",
 		account: address,
-		args: ["0x46A74e56ed132ed0142508160119Cf105b21820a"],
 	});
 
 	const DateConverter = (timestamp) => {
