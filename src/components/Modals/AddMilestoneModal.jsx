@@ -13,8 +13,6 @@ const AddMilestoneModal = ({ handleMileCloseModal,invoices,selectedInvoiceIndex 
   const {writeContractAsync} = useWriteContract();
   
 
-console.log(id);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
